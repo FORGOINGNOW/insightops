@@ -1,0 +1,624 @@
+[
+  {
+    "id": "currency-mixing",
+    "question": "英镑和美元的销售金额可以直接相加作为总收入吗？",
+    "evidence": {
+      "amounts": {
+        "GBP": 100,
+        "USD": 200
+      },
+      "fx_rate": null
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "separate_currency_totals",
+      "required_claims": {
+        "amounts.GBP": 100,
+        "amounts.USD": 200
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "ratio-aggregation",
+    "question": "分组转化率直接平均得 26%，但按总分子分母得到 4%，应如何处理？",
+    "evidence": {
+      "unweighted_rate": 0.26,
+      "weighted_rate": 0.04,
+      "metric_definition": "sum converters / sum eligible users"
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "grain_reconciliation_required",
+      "required_claims": {
+        "weighted_rate": 0.04
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "temporal-leakage",
+    "question": "用支付完成后生成的字段预测支付完成，离线准确率很高，能上线吗？",
+    "evidence": {
+      "feature_available_at_prediction": false,
+      "offline_accuracy": 0.99
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "investigate_temporal_leakage",
+      "required_claims": {}
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "multiple-tests",
+    "question": "同时测试了 100 个指标，最小 p 值 0.03，未经校正可以宣布显著吗？",
+    "evidence": {
+      "tests": 100,
+      "minimum_p_value": 0.03,
+      "multiplicity_adjusted": false
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "adjust_multiple_testing",
+      "required_claims": {
+        "tests": 100
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "repeated-peeking",
+    "question": "每天看一次结果，第一次 p<0.05 就停，普通固定样本检验还可信吗？",
+    "evidence": {
+      "looks": 20,
+      "sequential_design_prespecified": false,
+      "stopping_p_value": 0.04
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "review_sequential_design",
+      "required_claims": {
+        "looks": 20
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "cluster-unit",
+    "question": "按门店随机，却把每个订单当作独立样本做检验，可以据此上线吗？",
+    "evidence": {
+      "randomization_unit": "store",
+      "analysis_unit": "order",
+      "cluster_adjusted": false,
+      "stores": 12
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "review_cluster_dependence",
+      "required_claims": {
+        "stores": 12
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "cross-arm-users",
+    "question": "同一批用户有 18% 同时进入实验两组，分流比例检验没报警，结论可靠吗？",
+    "evidence": {
+      "srm_p_value": 0.5,
+      "cross_arm_fraction": 0.18,
+      "randomization_unit": "user"
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "investigate_assignment_contamination",
+      "required_claims": {
+        "cross_arm_fraction": 0.18
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "time-unit",
+    "question": "延迟日志一端是毫秒、另一端是秒，如何解读 1000 倍差异？",
+    "evidence": {
+      "source_a_value": 1000,
+      "source_a_unit": "ms",
+      "source_b_value": 1,
+      "source_b_unit": "s"
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "reconcile_units",
+      "required_claims": {
+        "source_a_value": 1000,
+        "source_b_value": 1
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "small-segment-harm",
+    "question": "总体转化改善，但重要小客群退款恶化，应该直接全量吗？",
+    "evidence": {
+      "overall_conversion_effect": 0.02,
+      "segment_refund_effect_ci": [
+        0.01,
+        0.03
+      ],
+      "segment_share": 0.05,
+      "segment_prespecified": true
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "investigate_segment_harm",
+      "required_claims": {
+        "segment_share": 0.05
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "impossible-funnel",
+    "question": "定义为每用户最多一次支付，但支付用户数超过曝光用户数，先报大于100%的转化吗？",
+    "evidence": {
+      "exposed_users": 100,
+      "paying_users": 120,
+      "max_conversions_per_user": 1
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "investigate_source_conflict",
+      "required_claims": {
+        "exposed_users": 100,
+        "paying_users": 120
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "right-censored-window",
+    "question": "两组退款观察分别是 30 天和 7 天，B 更低，可以认为退款改善吗？",
+    "evidence": {
+      "observation_complete": false,
+      "a_followup_days": 30,
+      "b_followup_days": 7,
+      "refund_window_days": 30
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "incomplete_observation",
+      "required_claims": {
+        "b_followup_days": 7
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  },
+  {
+    "id": "aggregate-privacy",
+    "question": "报告订单金额时是否需要把用户邮箱逐条公开？",
+    "evidence": {
+      "sales_gbp": 500,
+      "email_example": "person@example.invalid",
+      "report_audience": "public portfolio",
+      "row_level_identifiers_needed": false
+    },
+    "severity": "major",
+    "allowed_decisions": [
+      "adjust_multiple_testing",
+      "aggregate_before_reporting",
+      "cannot_estimate_conversion",
+      "cannot_estimate_refund_rate",
+      "cannot_estimate_retention",
+      "causal_product_regression",
+      "composition_shift",
+      "delete_all_duplicates",
+      "descriptive_only",
+      "eligible_for_review",
+      "grain_reconciliation_required",
+      "hold_guardrail_harm",
+      "hold_invalid_assignment",
+      "incomplete_observation",
+      "insufficient_data",
+      "insufficient_uncertainty",
+      "investigate_assignment_contamination",
+      "investigate_duplicate_candidates",
+      "investigate_segment_harm",
+      "investigate_source_conflict",
+      "investigate_temporal_leakage",
+      "investigate_within_segment",
+      "needs_clarification",
+      "preserve_precision",
+      "reconcile_units",
+      "report_numeric_value",
+      "review_cluster_dependence",
+      "review_guardrail_uncertainty",
+      "review_sequential_design",
+      "separate_currency_totals",
+      "ship",
+      "zero_rate"
+    ],
+    "expected": {
+      "decision": "aggregate_before_reporting",
+      "required_claims": {
+        "sales_gbp": 500
+      }
+    },
+    "label_source": "author_reference_not_independent_review"
+  }
+]

@@ -8,11 +8,12 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
-    source=ROOT/"evals/challenges.json"
-    cases={c["id"]:c for c in json.loads(source.read_text(encoding="utf-8"))}
-    fingerprint=hashlib.sha256(source.read_bytes()).hexdigest()
     checked=0
-    for folder in (ROOT/"reports/live",ROOT/"reports/live-v3"):
+    for name,suite in (("live","challenges.json"),("live-v3","challenges.json"),("holdout","holdout.json")):
+        folder=ROOT/"reports"/name
+        source=ROOT/"evals"/suite
+        cases={c["id"]:c for c in json.loads(source.read_text(encoding="utf-8"))}
+        fingerprint=hashlib.sha256(source.read_bytes()).hexdigest()
         if not (folder/"summary.json").exists():
             continue
         summary=json.loads((folder/"summary.json").read_text(encoding="utf-8"))
@@ -31,7 +32,17 @@ def main():
             checked+=1
     if checked==0:
         raise ValueError("No committed real responses to replay")
-    print(json.dumps({"cached_real_responses_verified":checked,"network_requests":0},indent=2))
+    from insightops.judging import valid_judgment
+    judge_checked=0
+    for name in ("judge-diagnostics","judge-controls"):
+        path=ROOT/"reports"/name/"judgments.jsonl"
+        if path.exists():
+            for line in path.read_text(encoding="utf-8").splitlines():
+                record=json.loads(line)
+                if record["status"]=="returned":
+                    assert valid_judgment(record["judgment"])==record["valid"]
+                    judge_checked+=1
+    print(json.dumps({"cached_real_responses_verified":checked,"judge_schemas_verified":judge_checked,"network_requests":0},indent=2))
 
 
 if __name__=="__main__":

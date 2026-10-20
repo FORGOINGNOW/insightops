@@ -1,0 +1,122 @@
+{
+  "pairs": 2,
+  "planned_requests": 4,
+  "live": true,
+  "judge_model": "deepseek-flash",
+  "sampling": "first eligible task families in frozen suite order, two repeat answers per task",
+  "human_calibration": "not_collected",
+  "same_model_judge": false,
+  "rubric_sha256": "4da073ab72c6d245ae85e800905931f36d372cd32b6a12f697301765560ef509",
+  "requests_attempted": 4,
+  "valid_judgments": 4,
+  "order_checks": [
+    {
+      "case_id": "currency-mixing",
+      "preference_after_mapping": [
+        0,
+        0
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "time-unit",
+      "preference_after_mapping": [
+        0,
+        0
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "preference_consistency": 1.0,
+  "reported_tokens": 5872,
+  "limitations": [
+    "Same model reviews its own repeat answers; self-preference risk remains.",
+    "Order swapping also includes stochastic rerun variation; inconsistency does not isolate a causal position effect.",
+    "No human labels: this is a judge diagnostic, not human calibration or correctness validation."
+  ],
+  "control_type": "engineered_numeric_corruption",
+  "control_design": [
+    {
+      "case_id": "currency-mixing",
+      "corrupted_path": "amounts.GBP",
+      "original_value": 100,
+      "fabricated_value": 1234667,
+      "expected_preferred_repeat": 0
+    },
+    {
+      "case_id": "time-unit",
+      "corrupted_path": "source_a_value",
+      "original_value": 1000,
+      "fabricated_value": 1235567,
+      "expected_preferred_repeat": 0
+    }
+  ],
+  "control_checks": [
+    {
+      "case_id": "currency-mixing",
+      "swapped": false,
+      "preferred_original": true,
+      "corrupt_numeric_score": 0,
+      "corrupt_evidence_score": 0
+    },
+    {
+      "case_id": "currency-mixing",
+      "swapped": true,
+      "preferred_original": true,
+      "corrupt_numeric_score": 0,
+      "corrupt_evidence_score": 0
+    },
+    {
+      "case_id": "time-unit",
+      "swapped": false,
+      "preferred_original": true,
+      "corrupt_numeric_score": 0,
+      "corrupt_evidence_score": 0
+    },
+    {
+      "case_id": "time-unit",
+      "swapped": true,
+      "preferred_original": true,
+      "corrupt_numeric_score": 0,
+      "corrupt_evidence_score": 0
+    }
+  ],
+  "correct_control_preferences": 4,
+  "warning": "Known-error diagnostic only; not independent human calibration or production judge accuracy."
+}

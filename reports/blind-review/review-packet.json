@@ -1,0 +1,849 @@
+[
+  {
+    "item_id": "item-001",
+    "question": "定义为每用户最多一次支付，但支付用户数超过曝光用户数，先报大于100%的转化吗？",
+    "evidence": {
+      "exposed_users": 100,
+      "paying_users": 120,
+      "max_conversions_per_user": 1
+    },
+    "answer": {
+      "decision": "grain_reconciliation_required",
+      "summary": "The paying-user count exceeds the exposed-user count under a max-one-payment-per-user definition, so reporting a conversion rate above 100% would be invalid. Reconcile the user populations and exposure-payment linkage before calculating or reporting conversion.",
+      "claims": [
+        {
+          "path": "exposed_users",
+          "value": 100
+        },
+        {
+          "path": "paying_users",
+          "value": 120
+        },
+        {
+          "path": "max_conversions_per_user",
+          "value": 1
+        }
+      ],
+      "limitations": [
+        "The numerator and denominator are inconsistent: paying_users exceeds exposed_users despite the max-one-payment-per-user constraint.",
+        "No valid conversion rate should be reported until the exposure population, payer population, and user-level linkage are reconciled.",
+        "The evidence does not establish whether the issue is undercounted exposure, unexposed payers, or another grain/linkage mismatch."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-002",
+    "question": "每天看一次结果，第一次 p<0.05 就停，普通固定样本检验还可信吗？",
+    "evidence": {
+      "looks": 20,
+      "sequential_design_prespecified": false,
+      "stopping_p_value": 0.04
+    },
+    "answer": {
+      "decision": "review_sequential_design",
+      "summary": "每天看结果并在首次 p<0.05 时停止，属于未预先设定的序贯监测/可选停止；在 20 次查看且 sequential_design_prespecified=false 的情况下，普通固定样本检验的 p 值不再可信，停止时 p=0.04 不能按常规显著性解释，需要按序贯设计校正或重新预设分析方案。",
+      "claims": [
+        {
+          "path": "looks",
+          "value": 20
+        },
+        {
+          "path": "stopping_p_value",
+          "value": 0.04
+        }
+      ],
+      "limitations": [
+        "sequential_design_prespecified 为 false，不能把该停止点当作预设固定样本检验结果。",
+        "未提供 alpha spending、信息时间或校正方法，无法判断校正后的显著性。",
+        "20 次重复查看会放大第一类错误；p=0.04 的原始固定样本解释不可靠。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-003",
+    "question": "报告订单金额时是否需要把用户邮箱逐条公开？",
+    "evidence": {
+      "sales_gbp": 500,
+      "email_example": "person@example.invalid",
+      "report_audience": "public portfolio",
+      "row_level_identifiers_needed": false
+    },
+    "answer": {
+      "decision": "aggregate_before_reporting",
+      "summary": "No. For a public portfolio report, order amount should be reported in aggregate (GBP 500) rather than publishing each user's email row by row; row-level identifiers are not needed for this audience.",
+      "claims": [
+        {
+          "path": "sales_gbp",
+          "value": 500
+        }
+      ],
+      "limitations": [
+        "The evidence provides only one aggregate sales figure and contextual flags, not a full privacy or legal policy.",
+        "The email value is an illustrative example and should not be disclosed in a public portfolio.",
+        "No sample size, uncertainty interval, or row-level dataset is provided, so this is a reporting/privacy determination rather than a statistical estimate."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-004",
+    "question": "分组转化率直接平均得 26%，但按总分子分母得到 4%，应如何处理？",
+    "evidence": {
+      "unweighted_rate": 0.26,
+      "weighted_rate": 0.04,
+      "metric_definition": "sum converters / sum eligible users"
+    },
+    "answer": {
+      "decision": "aggregate_before_reporting",
+      "summary": "指标定义是“总转化人数 / 总符合条件用户数”，因此应先用总分子和总分母聚合后再计算并报告转化率，即采用加权转化率 4%；直接平均各分组转化率得到的 26% 受分组样本量权重影响，不应作为总体转化率。",
+      "claims": [
+        {
+          "path": "weighted_rate",
+          "value": 0.04
+        },
+        {
+          "path": "unweighted_rate",
+          "value": 0.26
+        }
+      ],
+      "limitations": [
+        "未提供各分组用户数或分子分母，无法复核加权计算过程。",
+        "分组直接平均与总体聚合差异可能反映分组规模构成差异，不能据此作因果解释。",
+        "应按明确指标定义统一分析粒度，避免把分组率的未加权平均当作总体率报告。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-005",
+    "question": "英镑和美元的销售金额可以直接相加作为总收入吗？",
+    "evidence": {
+      "amounts": {
+        "GBP": 100,
+        "USD": 200
+      },
+      "fx_rate": null
+    },
+    "answer": {
+      "decision": "separate_currency_totals",
+      "summary": "不能将英镑和美元金额直接相加作为总收入；这两种金额属于不同货币单位。由于缺少汇率证据，无法换算成统一货币后汇总，应分别列示各币种金额，或在取得明确汇率后再换算汇总。",
+      "claims": [
+        {
+          "path": "amounts.GBP",
+          "value": 100
+        },
+        {
+          "path": "amounts.USD",
+          "value": 200
+        }
+      ],
+      "limitations": [
+        "fx_rate 为 null，缺少可用于货币换算的汇率，因此无法计算统一货币下的总收入。",
+        "直接相加会混用不同货币单位，所得数值没有有效收入含义。",
+        "在报告前必须明确汇率来源与换算时点，否则不应跨币种汇总。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-006",
+    "question": "延迟日志一端是毫秒、另一端是秒，如何解读 1000 倍差异？",
+    "evidence": {
+      "source_a_value": 1000,
+      "source_a_unit": "ms",
+      "source_b_value": 1,
+      "source_b_unit": "s"
+    },
+    "answer": {
+      "decision": "reconcile_units",
+      "summary": "The apparent 1000x difference is a unit mismatch: 1000 ms equals 1 s. After converting to a common unit, the two source values agree; report latency only after unit reconciliation.",
+      "claims": [
+        {
+          "path": "source_a_value",
+          "value": 1000
+        },
+        {
+          "path": "source_b_value",
+          "value": 1
+        }
+      ],
+      "limitations": [
+        "The evidence gives only one value per source and does not establish the full latency distribution or which logging pipeline is authoritative.",
+        "Unit reconciliation addresses the magnitude mismatch but does not validate data quality, sampling, or timestamps."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-007",
+    "question": "按门店随机，却把每个订单当作独立样本做检验，可以据此上线吗？",
+    "evidence": {
+      "randomization_unit": "store",
+      "analysis_unit": "order",
+      "cluster_adjusted": false,
+      "stores": 12
+    },
+    "answer": {
+      "decision": "review_cluster_dependence",
+      "summary": "Randomization was at the store level, but testing treated orders as independent samples without cluster adjustment. With only 12 stores, order-level analysis ignores within-store correlation and can understate uncertainty, so the experiment should not be used to support launch until cluster dependence is properly addressed.",
+      "claims": [
+        {
+          "path": "stores",
+          "value": 12
+        }
+      ],
+      "limitations": [
+        "The evidence only provides 12 randomized stores; order-level sample size is not given.",
+        "The boolean flags randomization_unit, analysis_unit, and cluster_adjusted are non-numeric and therefore are discussed in the summary rather than cited as numeric claims.",
+        "No outcome or interval data are provided, so effect magnitude and uncertainty cannot be assessed here."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-008",
+    "question": "定义为每用户最多一次支付，但支付用户数超过曝光用户数，先报大于100%的转化吗？",
+    "evidence": {
+      "exposed_users": 100,
+      "paying_users": 120,
+      "max_conversions_per_user": 1
+    },
+    "answer": {
+      "decision": "grain_reconciliation_required",
+      "summary": "不应先报告大于100%的转化率。定义规定每用户最多一次支付，但支付用户数120已超过曝光用户数100，说明曝光用户与支付用户的统计口径/粒度不一致或存在未对齐/重复计数；需先对齐并去重用户级曝光与支付数据，再计算转化率。",
+      "claims": [
+        {
+          "path": "exposed_users",
+          "value": 100
+        },
+        {
+          "path": "paying_users",
+          "value": 120
+        },
+        {
+          "path": "max_conversions_per_user",
+          "value": 1
+        }
+      ],
+      "limitations": [
+        "当前计数不一致，无法据此计算有效转化率。",
+        "需确认曝光用户和支付用户是否为同一人群、同一时间窗口和同一去重口径。",
+        "若支付用户包含未曝光用户或重复用户，报告转化率会产生误导。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-009",
+    "question": "两组退款观察分别是 30 天和 7 天，B 更低，可以认为退款改善吗？",
+    "evidence": {
+      "observation_complete": false,
+      "a_followup_days": 30,
+      "b_followup_days": 7,
+      "refund_window_days": 30
+    },
+    "answer": {
+      "decision": "incomplete_observation",
+      "summary": "不可认为退款改善。两组观察窗口不一致：A 仅随访 30 天、B 仅随访 7 天，而退款窗口为 30 天，B 组尚未走完窗口，观察也未完成（observation_complete=false）。这是不完整的观察窗口，7 天与 30 天的退款率不可直接比较，B 目前的较低值很可能只是尚未成熟，需等 B 达到完整 30 天窗口后再做同口径比较。",
+      "claims": [
+        {
+          "path": "a_followup_days",
+          "value": 30
+        },
+        {
+          "path": "b_followup_days",
+          "value": 7
+        },
+        {
+          "path": "refund_window_days",
+          "value": 30
+        }
+      ],
+      "limitations": [
+        "B 组仅随访 7 天，未覆盖 30 天退款窗口，退款事件仍可能继续累积。",
+        "观察未完成（observation_complete=false），两组观察期长度不同，退款率分母的时间口径不一致。",
+        "证据中未提供两组样本量、退款事件数或置信区间，无法量化不确定性。",
+        "缺少退款率的明确口径定义（按订单、按金额或按用户），当前无法做规范化对比。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-010",
+    "question": "报告订单金额时是否需要把用户邮箱逐条公开？",
+    "evidence": {
+      "sales_gbp": 500,
+      "email_example": "person@example.invalid",
+      "report_audience": "public portfolio",
+      "row_level_identifiers_needed": false
+    },
+    "answer": {
+      "decision": "aggregate_before_reporting",
+      "summary": "No. The stated audience is a public portfolio and row-level identifiers are not needed, so the order amount should be reported in aggregate rather than publishing each user email. The placeholder email example should not be disclosed as row-level data.",
+      "claims": [
+        {
+          "path": "sales_gbp",
+          "value": 500
+        }
+      ],
+      "limitations": [
+        "The evidence does not specify the required aggregation level or any applicable privacy policy details.",
+        "The row-level identifier requirement is a boolean and is therefore discussed in the summary rather than cited as numeric evidence.",
+        "The email_example is a placeholder and cannot establish real-data disclosure needs."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-011",
+    "question": "同一批用户有 18% 同时进入实验两组，分流比例检验没报警，结论可靠吗？",
+    "evidence": {
+      "srm_p_value": 0.5,
+      "cross_arm_fraction": 0.18,
+      "randomization_unit": "user"
+    },
+    "answer": {
+      "decision": "investigate_assignment_contamination",
+      "summary": "不可靠。分流比例检验（SRM p=0.5）只检验各臂总量是否符合预期比例，对同一用户同时落入两臂这种个体级重叠完全不敏感；证据显示 18% 的用户同时进入实验两组，而随机化单元被声明为 user，这与'用户只能被分入一个组'的假设直接冲突。因此 p=0.5 不能作为分配有效的证明，应先调查并修复分配污染（如去重键、分流逻辑、跨臂曝光过滤），再谈实验结论。",
+      "claims": [
+        {
+          "path": "srm_p_value",
+          "value": 0.5
+        },
+        {
+          "path": "cross_arm_fraction",
+          "value": 0.18
+        }
+      ],
+      "limitations": [
+        "SRM 检验仅针对聚合分流比例，无法检测同一随机化单元跨臂重叠，p 值不报警不构成分配有效的证据。",
+        "cross_arm_fraction=0.18 是用户级重叠比例，但证据未给出重叠用户的曝光次数、事件量或分析权重，无法量化其对指标估计的实际污染程度。",
+        "未提供任何转化/留存/退款等结果指标或分母，本证据无法评估实验效应方向或大小。",
+        "未说明 18% 重叠的成因（同一用户多账号、分流哈希冲突、跨设备/跨浏览器重复标识、埋点重复上报等），不同成因对应不同修复路径。",
+        "证据未包含样本量、置信区间或时间窗口信息，无法判断重叠是否为稳定系统性问题。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-012",
+    "question": "同时测试了 100 个指标，最小 p 值 0.03，未经校正可以宣布显著吗？",
+    "evidence": {
+      "tests": 100,
+      "minimum_p_value": 0.03,
+      "multiplicity_adjusted": false
+    },
+    "answer": {
+      "decision": "adjust_multiple_testing",
+      "summary": "同时检验 100 个指标且未做多重性校正时，最小 p=0.03 不足以直接宣布显著；应进行多重检验校正后才可报告显著性结论。",
+      "claims": [
+        {
+          "path": "tests",
+          "value": 100
+        },
+        {
+          "path": "minimum_p_value",
+          "value": 0.03
+        }
+      ],
+      "limitations": [
+        "multiplicity_adjusted 为 false，说明未提供校正后的显著性结果。",
+        "仅凭最小 p 值无法判断具体哪些指标显著，也未提供校正 p 值或置信区间。",
+        "需明确采用的多重检验校正方法（如 Bonferroni 或 FDR）及对应阈值。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-013",
+    "question": "总体转化改善，但重要小客群退款恶化，应该直接全量吗？",
+    "evidence": {
+      "overall_conversion_effect": 0.02,
+      "segment_refund_effect_ci": [
+        0.01,
+        0.03
+      ],
+      "segment_share": 0.05,
+      "segment_prespecified": true
+    },
+    "answer": {
+      "decision": "hold_guardrail_harm",
+      "summary": "不应直接全量。总体转化效应为正（0.02），但预设的小客群（占比 5%）退款率效应置信区间为 [0.01, 0.03]，表明该重要小客群退款恶化且区间不跨 0，构成护栏伤害；应先暂停全量并调查该客群伤害、评估缓解措施。",
+      "claims": [
+        {
+          "path": "overall_conversion_effect",
+          "value": 0.02
+        },
+        {
+          "path": "segment_refund_effect_ci.0",
+          "value": 0.01
+        },
+        {
+          "path": "segment_refund_effect_ci.1",
+          "value": 0.03
+        },
+        {
+          "path": "segment_share",
+          "value": 0.05
+        }
+      ],
+      "limitations": [
+        "证据只提供效应量和区间，未提供样本量、退款基线率或绝对伤害规模。",
+        "该客群占比仅 5%，虽然区间显示恶化，但仍需检查估计精度和业务容忍阈值。",
+        "segment_prespecified 为布尔信息，不能作为 claims 的数值证据；其含义已在摘要/限制中说明。",
+        "未提供机制、长期影响或缓解方案效果，不能据此判断全量后的净收益。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-014",
+    "question": "按门店随机，却把每个订单当作独立样本做检验，可以据此上线吗？",
+    "evidence": {
+      "randomization_unit": "store",
+      "analysis_unit": "order",
+      "cluster_adjusted": false,
+      "stores": 12
+    },
+    "answer": {
+      "decision": "review_cluster_dependence",
+      "summary": "Randomization was assigned at the store level (12 stores) but hypothesis tests treat each order as an independent observation with no cluster adjustment. This unit-of-analysis mismatch understates standard errors and inflates significance, so the experiment is not sufficient to ship on. Before any launch decision, re-analyze with cluster-robust or store-level aggregation (or a hierarchical model) and confirm assignment validity.",
+      "claims": [
+        {
+          "path": "stores",
+          "value": 12
+        }
+      ],
+      "limitations": [
+        "No outcome, effect-size, variance, or interval data are provided, so the magnitude and direction of any effect cannot be assessed.",
+        "cluster_adjusted is false and randomization_unit differs from analysis_unit, but no intra-cluster correlation or cluster-size distribution is supplied to quantify the inflation of Type I error.",
+        "Only 12 randomized units (stores) limits power and the reliability of cluster-robust inference; no SRM or balance check evidence is included.",
+        "This is a design/unit-of-analysis critique only; it does not by itself establish that the treatment is harmful or beneficial."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-015",
+    "question": "英镑和美元的销售金额可以直接相加作为总收入吗？",
+    "evidence": {
+      "amounts": {
+        "GBP": 100,
+        "USD": 200
+      },
+      "fx_rate": null
+    },
+    "answer": {
+      "decision": "separate_currency_totals",
+      "summary": "不能将英镑和美元销售金额直接相加作为总收入；在缺少汇率的情况下，应分别报告 GBP 100 和 USD 200，或先按明确汇率折算到同一币种后再汇总。",
+      "claims": [
+        {
+          "path": "amounts.GBP",
+          "value": 100
+        },
+        {
+          "path": "amounts.USD",
+          "value": 200
+        }
+      ],
+      "limitations": [
+        "fx_rate 为 null，无法进行币种折算。",
+        "未提供汇率日期、汇率来源或统一折算政策。",
+        "不同币种的金额不可直接比较或相加。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-016",
+    "question": "每天看一次结果，第一次 p<0.05 就停，普通固定样本检验还可信吗？",
+    "evidence": {
+      "looks": 20,
+      "sequential_design_prespecified": false,
+      "stopping_p_value": 0.04
+    },
+    "answer": {
+      "decision": "review_sequential_design",
+      "summary": "不能把第一次 p=0.04 当作普通固定样本检验的常规显著性证据。证据显示共进行了 20 次查看，且未预先设定序贯设计；反复查看并在首次 p<0.05 时停止会抬高假阳性风险，需要按序贯检验重新审查或校正。",
+      "claims": [
+        {
+          "path": "looks",
+          "value": 20
+        },
+        {
+          "path": "stopping_p_value",
+          "value": 0.04
+        }
+      ],
+      "limitations": [
+        "sequential_design_prespecified 为 false，未提供预先设定的序贯设计或 alpha-spending 方案。",
+        "stopping_p_value=0.04 是未校正的首次跨线 p 值，不能直接作为固定样本检验结论。",
+        "没有提供校正后的 p 值、置信区间或逐次检验的 alpha 分配。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-017",
+    "question": "用支付完成后生成的字段预测支付完成，离线准确率很高，能上线吗？",
+    "evidence": {
+      "feature_available_at_prediction": false,
+      "offline_accuracy": 0.99
+    },
+    "answer": {
+      "decision": "investigate_temporal_leakage",
+      "summary": "该模型使用支付完成后才生成的字段来预测支付完成，而该特征在预测时不可用，存在明显的时间/目标泄漏。离线准确率 0.99 不能作为上线依据，应先调查并修复特征可用性问题。",
+      "claims": [
+        {
+          "path": "offline_accuracy",
+          "value": 0.99
+        }
+      ],
+      "limitations": [
+        "feature_available_at_prediction 为 false，说明关键特征在预测时不可用，离线评估结果不可直接外推到线上。",
+        "证据仅包含离线准确率，没有上线前验证、置信区间或生产环境表现数据。",
+        "在完成时间泄漏调查并重新评估可用特征前，不应上线该模型。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-018",
+    "question": "延迟日志一端是毫秒、另一端是秒，如何解读 1000 倍差异？",
+    "evidence": {
+      "source_a_value": 1000,
+      "source_a_unit": "ms",
+      "source_b_value": 1,
+      "source_b_unit": "s"
+    },
+    "answer": {
+      "decision": "reconcile_units",
+      "summary": "证据显示源 A 为 1000 ms，源 B 为 1 s；两者在时间单位上等价（1000 毫秒 = 1 秒），因此所谓“1000 倍差异”来自单位不一致，而不是实际延迟相差 1000 倍。应先统一单位再比较或汇总。",
+      "claims": [
+        {
+          "path": "source_a_value",
+          "value": 1000
+        },
+        {
+          "path": "source_b_value",
+          "value": 1
+        }
+      ],
+      "limitations": [
+        "该证据只给出一对数值及单位，未提供时间戳、日志字段定义或同一指标的口径。",
+        "无法据此判断实际延迟分布、采样窗口或是否存在其他单位混用。",
+        "单位统一后仍不能仅凭这两个值得出性能结论。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-019",
+    "question": "分组转化率直接平均得 26%，但按总分子分母得到 4%，应如何处理？",
+    "evidence": {
+      "unweighted_rate": 0.26,
+      "weighted_rate": 0.04,
+      "metric_definition": "sum converters / sum eligible users"
+    },
+    "answer": {
+      "decision": "aggregate_before_reporting",
+      "summary": "指标定义是“总转化人数 / 总符合条件用户数”，因此总体转化率应按总分子和总分母加权汇总计算为 0.04（4%）。直接平均各组转化率得到的 0.26（26%）忽略了各组用户规模差异，不应作为总体转化率报告。",
+      "claims": [
+        {
+          "path": "unweighted_rate",
+          "value": 0.26
+        },
+        {
+          "path": "weighted_rate",
+          "value": 0.04
+        }
+      ],
+      "limitations": [
+        "未提供各组转化人数、符合条件用户数及置信区间，无法进一步评估分组差异或不确定性。",
+        "若需报告分组结果，应同时展示各组分母，并避免把未加权平均当作总体转化率。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-020",
+    "question": "同时测试了 100 个指标，最小 p 值 0.03，未经校正可以宣布显著吗？",
+    "evidence": {
+      "tests": 100,
+      "minimum_p_value": 0.03,
+      "multiplicity_adjusted": false
+    },
+    "answer": {
+      "decision": "adjust_multiple_testing",
+      "summary": "不能：在同时检验 100 个指标且未进行多重性校正的情况下，最小 p=0.03 不足以直接宣布显著；需要先采用并说明多重检验校正方法后再判断。",
+      "claims": [
+        {
+          "path": "tests",
+          "value": 100
+        },
+        {
+          "path": "minimum_p_value",
+          "value": 0.03
+        }
+      ],
+      "limitations": [
+        "证据显示 multiplicity_adjusted 为 false，因此当前结果未控制多重检验带来的假阳性风险。",
+        "未指定显著性阈值和多重校正方法；不能仅凭最小 p 值 0.03 得出可宣布显著的结论。",
+        "未提供各指标的完整 p 值分布或校正后结果，无法判断校正后是否仍有显著项。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-021",
+    "question": "同一批用户有 18% 同时进入实验两组，分流比例检验没报警，结论可靠吗？",
+    "evidence": {
+      "srm_p_value": 0.5,
+      "cross_arm_fraction": 0.18,
+      "randomization_unit": "user"
+    },
+    "answer": {
+      "decision": "investigate_assignment_contamination",
+      "summary": "分流比例检验未报警（p=0.5）只能说明总体分流比例未显示 SRM，但同一批用户中 18% 同时进入两组说明存在跨组污染/分配有效性问题。在查清并修复污染或重新随机化前，实验结论不可靠。",
+      "claims": [
+        {
+          "path": "srm_p_value",
+          "value": 0.5
+        },
+        {
+          "path": "cross_arm_fraction",
+          "value": 0.18
+        }
+      ],
+      "limitations": [
+        "SRM 检验只检验总体分流比例，不能排除同一用户进入多组。",
+        "18% 的跨组比例提示分配污染，需要调查随机化、去重及日志链路。",
+        "未提供结果指标、样本量或置信区间，无法评估实验效应及不确定性。",
+        "randomization_unit 为 user 的文本信息不作为数值 claim 引用。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-022",
+    "question": "两组退款观察分别是 30 天和 7 天，B 更低，可以认为退款改善吗？",
+    "evidence": {
+      "observation_complete": false,
+      "a_followup_days": 30,
+      "b_followup_days": 7,
+      "refund_window_days": 30
+    },
+    "answer": {
+      "decision": "incomplete_observation",
+      "summary": "不能认为退款改善。A 的观察随访为 30 天，B 仅为 7 天，而退款窗口为 30 天；B 的观察期尚未覆盖完整退款窗口，因此两组退款观察不可直接比较。",
+      "claims": [
+        {
+          "path": "a_followup_days",
+          "value": 30
+        },
+        {
+          "path": "b_followup_days",
+          "value": 7
+        },
+        {
+          "path": "refund_window_days",
+          "value": 30
+        }
+      ],
+      "limitations": [
+        "observation_complete 为 false，说明观察未完成。",
+        "B 仅观察 7 天，未覆盖 30 天退款窗口，不能据此判定退款率改善。",
+        "当前只能说明观察期不完整，不能推断因果或最终退款表现。"
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-023",
+    "question": "总体转化改善，但重要小客群退款恶化，应该直接全量吗？",
+    "evidence": {
+      "overall_conversion_effect": 0.02,
+      "segment_refund_effect_ci": [
+        0.01,
+        0.03
+      ],
+      "segment_share": 0.05,
+      "segment_prespecified": true
+    },
+    "answer": {
+      "decision": "hold_guardrail_harm",
+      "summary": "Do not proceed to full rollout. Although overall conversion improved by 0.02, the prespecified 5% segment shows a positive refund-effect interval of 0.01 to 0.03, indicating guardrail harm in an important small customer segment. Hold rollout and investigate/mitigate the segment-level refund regression before considering launch.",
+      "claims": [
+        {
+          "path": "overall_conversion_effect",
+          "value": 0.02
+        },
+        {
+          "path": "segment_refund_effect_ci.0",
+          "value": 0.01
+        },
+        {
+          "path": "segment_refund_effect_ci.1",
+          "value": 0.03
+        },
+        {
+          "path": "segment_share",
+          "value": 0.05
+        }
+      ],
+      "limitations": [
+        "The evidence does not state a business tolerance threshold for refund harm, so the exact materiality judgment is not provided.",
+        "The segment is small (5% share), and the aggregate population-level refund impact is not directly quantified in the evidence.",
+        "The segment is stated as prespecified, but assignment validity and experiment integrity are not separately documented in the supplied evidence."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  },
+  {
+    "item_id": "item-024",
+    "question": "用支付完成后生成的字段预测支付完成，离线准确率很高，能上线吗？",
+    "evidence": {
+      "feature_available_at_prediction": false,
+      "offline_accuracy": 0.99
+    },
+    "answer": {
+      "decision": "investigate_temporal_leakage",
+      "summary": "The proposed predictor is generated only after payment completion, so it is unavailable at scoring time (feature_available_at_prediction = false). The 0.99 offline accuracy is therefore almost certainly an artifact of temporal/target leakage rather than genuine predictive skill, and cannot justify deployment. The result should be treated as invalid until leakage is removed and the model is re-evaluated using only features observable before the prediction point; deployment ('ship') is not supported by this evidence.",
+      "claims": [
+        {
+          "path": "offline_accuracy",
+          "value": 0.99
+        }
+      ],
+      "limitations": [
+        "The key disqualifying fact (feature_available_at_prediction = false) is boolean and is discussed here rather than encoded as a numeric claim.",
+        "No live/out-of-time validation, baseline comparison, sample size, or confidence interval is provided, so the 0.99 accuracy cannot be assessed even as an offline estimate.",
+        "No information is given on the prediction timestamp, the feature's generation timestamp, or the label window, so the exact leakage mechanism and severity remain unquantified.",
+        "No guardrail, assignment, or rollout metrics are supplied; this analysis addresses only leakage validity, not downstream monitoring requirements."
+      ]
+    },
+    "reviewer_id": null,
+    "numeric_score": null,
+    "evidence_score": null,
+    "uncertainty_score": null,
+    "actionability_score": null,
+    "notes": null
+  }
+]

@@ -10,6 +10,8 @@
 
 真实模型首轮 V1/V2 严格参考评分为 13/24、14/24；明确输出契约后，V3 在相同案例上的开发复测为 23/24。后者不是独立测试成绩，完整失败与局限见 [V3 复测报告](reports/v3-contract-retest.md)。
 
+冻结 V3 后新增 12 个场景，每个运行两次，严格参考评分为 **18/24**；未据此修改系统。新场景结果、重复运行与裁判顺序诊断见 [新场景评测报告](reports/holdout-and-judge.md)。这是作者设计的合成评测，尚无独立真人标签。
+
 ## 30 秒看结果
 
 默认数据包含 20,000 个会话。会话支付转化率由 **17% 降至 8%**，但 organic 和 paid 渠道内分别保持 **20% 和 5%**。按原渠道结构标准化后，后期仍为 **17%**。总体变化由渠道构成变化解释，不能直接据此推断产品改版的因果效果。
@@ -108,6 +110,23 @@ insightops human-review --run-dir artifacts/live-evals/<run-id> --labels <comple
 ```
 
 模板不能当作已标注数据；单人评分不宣称评审间一致性。模型裁判校准仍待后续采集。
+
+## 新场景、盲评与裁判诊断
+
+```powershell
+# 仅预览冻结协议，不发请求：
+insightops holdout-eval
+# 12 场景各运行两次，共 24 次请求：
+insightops holdout-eval --live
+# 从已提交结果重建本地盲评包与协调映射，无模型请求：
+insightops review-pack --run-dir reports/holdout --cases evals/holdout.json --out artifacts/holdout-review
+# 没有真人标签时返回 awaiting_human_labels：
+insightops judge-calibrate --packet-dir artifacts/holdout-review
+# 真人独立填写后，与裁判评分比较：
+insightops judge-calibrate --packet-dir artifacts/holdout-review --labels <completed-review-packet.json> --judge-dir reports/judge-diagnostics
+```
+
+只把 review-packet.json 和评分说明发给真人评审，协调者保留映射。先独立评分再讨论。裁判顺序诊断使用配置中的同一模型，不是独立专家。比较指标包括混淆矩阵、精确一致率和二次加权 kappa；这些指标不会自动批准裁判用于发布。未收集到真人标签时，不输出伪造的一致率。
 
 ## MongoDB 可复现实验
 

@@ -1,0 +1,7 @@
+{
+  "suite_sha256": "d46c1cf528962d85e959e8b40062953f9bef74ae7919a52ca8c704e67e8c1e1f",
+  "frozen_v3_prompt_sha256": "48671f4825bdd344dde7767205c34fd6cbdd2252111cebf3d0b89aa245882ffe",
+  "frozen_policy_sha256": "18c6ed56f6463bbb7e33c544b1b6e27cb105cc928f45b99b492cd425ee99f627",
+  "frozen_code_commit": "7cd9d40a94889e229da2365609fbb73c8a0f5e84",
+  "protocol": "12 new author-designed task families; V3 frozen before first call; two repeats; do not tune on results. Not an independent external benchmark."
+}

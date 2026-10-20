@@ -1,0 +1,110 @@
+[
+  {
+    "case_id": "currency-mixing",
+    "repeats": 2,
+    "decisions": [
+      "separate_currency_totals",
+      "separate_currency_totals"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "ratio-aggregation",
+    "repeats": 2,
+    "decisions": [
+      "aggregate_before_reporting",
+      "aggregate_before_reporting"
+    ],
+    "all_reference_passed": false
+  },
+  {
+    "case_id": "temporal-leakage",
+    "repeats": 2,
+    "decisions": [
+      "investigate_temporal_leakage",
+      "investigate_temporal_leakage"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "multiple-tests",
+    "repeats": 2,
+    "decisions": [
+      "adjust_multiple_testing",
+      "adjust_multiple_testing"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "repeated-peeking",
+    "repeats": 2,
+    "decisions": [
+      "review_sequential_design",
+      "review_sequential_design"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "cluster-unit",
+    "repeats": 2,
+    "decisions": [
+      "review_cluster_dependence",
+      "review_cluster_dependence"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "cross-arm-users",
+    "repeats": 2,
+    "decisions": [
+      "investigate_assignment_contamination",
+      "investigate_assignment_contamination"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "time-unit",
+    "repeats": 2,
+    "decisions": [
+      "reconcile_units",
+      "reconcile_units"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "small-segment-harm",
+    "repeats": 2,
+    "decisions": [
+      "hold_guardrail_harm",
+      "hold_guardrail_harm"
+    ],
+    "all_reference_passed": false
+  },
+  {
+    "case_id": "impossible-funnel",
+    "repeats": 2,
+    "decisions": [
+      "grain_reconciliation_required",
+      "grain_reconciliation_required"
+    ],
+    "all_reference_passed": false
+  },
+  {
+    "case_id": "right-censored-window",
+    "repeats": 2,
+    "decisions": [
+      "incomplete_observation",
+      "incomplete_observation"
+    ],
+    "all_reference_passed": true
+  },
+  {
+    "case_id": "aggregate-privacy",
+    "repeats": 2,
+    "decisions": [
+      "aggregate_before_reporting",
+      "aggregate_before_reporting"
+    ],
+    "all_reference_passed": true
+  }
+]

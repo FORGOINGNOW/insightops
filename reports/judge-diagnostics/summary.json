@@ -1,0 +1,177 @@
+{
+  "pairs": 6,
+  "planned_requests": 12,
+  "live": true,
+  "judge_model": "deepseek-flash",
+  "sampling": "first eligible task families in frozen suite order, two repeat answers per task",
+  "human_calibration": "not_collected",
+  "same_model_judge": true,
+  "rubric_sha256": "4da073ab72c6d245ae85e800905931f36d372cd32b6a12f697301765560ef509",
+  "requests_attempted": 12,
+  "valid_judgments": 12,
+  "order_checks": [
+    {
+      "case_id": "currency-mixing",
+      "preference_after_mapping": [
+        "tie",
+        "tie"
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "ratio-aggregation",
+      "preference_after_mapping": [
+        "tie",
+        "tie"
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "temporal-leakage",
+      "preference_after_mapping": [
+        "tie",
+        "tie"
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "multiple-tests",
+      "preference_after_mapping": [
+        "tie",
+        "tie"
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "repeated-peeking",
+      "preference_after_mapping": [
+        "tie",
+        "tie"
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "case_id": "cluster-unit",
+      "preference_after_mapping": [
+        0,
+        0
+      ],
+      "preference_consistent": true,
+      "score_absolute_differences": {
+        "numeric_score": [
+          0,
+          0
+        ],
+        "evidence_score": [
+          0,
+          0
+        ],
+        "uncertainty_score": [
+          0,
+          0
+        ],
+        "actionability_score": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "preference_consistency": 1.0,
+  "reported_tokens": 17704,
+  "limitations": [
+    "Same model reviews its own repeat answers; self-preference risk remains.",
+    "Order swapping also includes stochastic rerun variation; inconsistency does not isolate a causal position effect.",
+    "No human labels: this is a judge diagnostic, not human calibration or correctness validation."
+  ]
+}

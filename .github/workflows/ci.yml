@@ -15,6 +15,7 @@ jobs:
       - run: python -m pytest -q
       - run: python scripts/replay_scores.py
       - run: insightops challenge-eval
+      - run: insightops holdout-eval
       - run: insightops demo
       - uses: actions/upload-artifact@v4
         with:

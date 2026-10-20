@@ -1,0 +1,21 @@
+{
+  "mode": "live",
+  "cases": 12,
+  "repeats": 2,
+  "planned_requests": 24,
+  "versions": [
+    "v3"
+  ],
+  "configuration": {
+    "api_key_configured": true,
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "ready": true,
+    "network_request_sent": false
+  },
+  "network_request_sent": false,
+  "cases_sha256": "d46c1cf528962d85e959e8b40062953f9bef74ae7919a52ca8c704e67e8c1e1f",
+  "runner_sha256": "285b3374d8c66a8ada8031b5721fe653fed4896c9f0179a05942b45b8ef36808",
+  "versions_scope": "V3 is a development retest after inspecting V1/V2 failures, not an untouched holdout.",
+  "scope": "Report/decision component with supplied evidence; not end-to-end tool-selection or SQL execution evaluation."
+}

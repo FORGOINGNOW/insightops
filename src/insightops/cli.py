@@ -79,8 +79,30 @@ def main():
     p=sub.add_parser("real-data"); p.add_argument("--download",action="store_true"); p.add_argument("--root",type=Path,default=ROOT)
     p=sub.add_parser("challenge-eval"); p.add_argument("--live",action="store_true"); p.add_argument("--limit",type=int,default=4); p.add_argument("--repeats",type=int,default=1); p.add_argument("--max-requests",type=int,default=12); p.add_argument("--versions",nargs="+",choices=["v1","v2","v3"],default=["v1","v2"]); p.add_argument("--root",type=Path,default=ROOT)
     p=sub.add_parser("human-review"); p.add_argument("--run-dir",type=Path,required=True); p.add_argument("--labels",type=Path,required=True)
+    p=sub.add_parser("review-pack");p.add_argument("--run-dir",type=Path,required=True);p.add_argument("--cases",type=Path,required=True);p.add_argument("--out",type=Path,required=True)
+    p=sub.add_parser("judge-eval");p.add_argument("--run-dir",type=Path,required=True);p.add_argument("--cases",type=Path,required=True);p.add_argument("--out",type=Path,required=True);p.add_argument("--live",action="store_true");p.add_argument("--limit",type=int,default=6);p.add_argument("--max-requests",type=int,default=12)
+    p=sub.add_parser("judge-calibrate");p.add_argument("--packet-dir",type=Path,required=True);p.add_argument("--labels",type=Path);p.add_argument("--judge-dir",type=Path)
+    p=sub.add_parser("holdout-eval");p.add_argument("--live",action="store_true");p.add_argument("--root",type=Path,default=ROOT)
     args=parser.parse_args()
-    if args.command=="human-review":
+    if args.command=="holdout-eval":
+        import hashlib
+        import inspect
+        from .challenges import evaluate_live,V3,policy_constraints
+        manifest=json.loads((args.root/"evals/holdout-manifest.json").read_text(encoding="utf-8"))
+        if hashlib.sha256(V3.encode()).hexdigest()!=manifest["frozen_v3_prompt_sha256"] or hashlib.sha256((args.root/"evals/holdout.json").read_bytes()).hexdigest()!=manifest["suite_sha256"] or hashlib.sha256(inspect.getsource(policy_constraints).encode()).hexdigest()!=manifest["frozen_policy_sha256"]:
+            raise ValueError("Frozen holdout or V3 changed; use a separately versioned evaluation")
+        result=evaluate_live(args.root/"evals/holdout.json",args.root/"artifacts/holdout",live=args.live,limit=12,repeats=2,versions=("v3",),max_requests=24)
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+    elif args.command in ("review-pack","judge-eval","judge-calibrate"):
+        from .judging import packet,judge_pairs,calibration_status
+        if args.command=="review-pack":
+            result=packet(args.run_dir,args.cases,args.out)
+        elif args.command=="judge-eval":
+            result=judge_pairs(args.run_dir,args.cases,args.out,live=args.live,limit=args.limit,max_requests=args.max_requests)
+        else:
+            result=calibration_status(args.packet_dir,args.labels,args.judge_dir)
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+    elif args.command=="human-review":
         from .review import analyze_reviews
         result=analyze_reviews(args.run_dir,args.labels)
         save(args.run_dir/"human-review-summary.json",result)
