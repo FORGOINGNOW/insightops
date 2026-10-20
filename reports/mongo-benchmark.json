@@ -1,0 +1,546 @@
+{
+  "server_version": "7.0.45",
+  "host": "Windows-11-10.0.26200-SP0",
+  "logical_cpus": 16,
+  "document_count": 1030360,
+  "average_document_bytes": 283,
+  "copies": 40,
+  "source_sha256": "a428c9f2d09e228f5c15a1c63ba568e081bbf02b739258cfe8db64e90c940cbb",
+  "repeats": 7,
+  "cache_protocol": "one warmup per condition; before-index then after-index; ordering/cache confounds remain",
+  "pipeline": [
+    {
+      "$match": {
+        "period": "after",
+        "event_type": "payment",
+        "received_at": {
+          "$lte": "2026-10-15T00:00:00"
+        }
+      }
+    },
+    {
+      "$group": {
+        "_id": "$logical_id"
+      }
+    },
+    {
+      "$count": "payments"
+    }
+  ],
+  "before": {
+    "result": [
+      {
+        "payments": 22480
+      }
+    ],
+    "latencies_ms": [
+      417.0155999890994,
+      413.7780000164639,
+      431.36849999427795,
+      433.7537999963388,
+      389.3510000198148,
+      408.02040000562556,
+      379.73230000352487
+    ],
+    "median_ms": 413.7780000164639,
+    "explain_summary": {
+      "nReturned": 22480,
+      "executionTimeMillis": 395,
+      "totalKeysExamined": 0,
+      "totalDocsExamined": 1030360
+    },
+    "explain": {
+      "explainVersion": "1",
+      "stages": [
+        {
+          "$cursor": {
+            "queryPlanner": {
+              "namespace": "insightops_portfolio.events_benchmark",
+              "indexFilterSet": false,
+              "parsedQuery": {
+                "$and": [
+                  {
+                    "event_type": {
+                      "$eq": "payment"
+                    }
+                  },
+                  {
+                    "period": {
+                      "$eq": "after"
+                    }
+                  },
+                  {
+                    "received_at": {
+                      "$lte": "2026-10-15T00:00:00"
+                    }
+                  }
+                ]
+              },
+              "queryHash": "4CDAC1A7",
+              "planCacheKey": "4CDAC1A7",
+              "optimizationTimeMillis": 0,
+              "maxIndexedOrSolutionsReached": false,
+              "maxIndexedAndSolutionsReached": false,
+              "maxScansToExplodeReached": false,
+              "winningPlan": {
+                "stage": "PROJECTION_SIMPLE",
+                "transformBy": {
+                  "logical_id": 1,
+                  "_id": 0
+                },
+                "inputStage": {
+                  "stage": "COLLSCAN",
+                  "filter": {
+                    "$and": [
+                      {
+                        "event_type": {
+                          "$eq": "payment"
+                        }
+                      },
+                      {
+                        "period": {
+                          "$eq": "after"
+                        }
+                      },
+                      {
+                        "received_at": {
+                          "$lte": "2026-10-15T00:00:00"
+                        }
+                      }
+                    ]
+                  },
+                  "direction": "forward"
+                }
+              },
+              "rejectedPlans": []
+            },
+            "executionStats": {
+              "executionSuccess": true,
+              "nReturned": 22480,
+              "executionTimeMillis": 395,
+              "totalKeysExamined": 0,
+              "totalDocsExamined": 1030360,
+              "executionStages": {
+                "stage": "PROJECTION_SIMPLE",
+                "nReturned": 22480,
+                "executionTimeMillisEstimate": 32,
+                "works": 1030361,
+                "advanced": 22480,
+                "needTime": 1007880,
+                "needYield": 0,
+                "saveState": 1031,
+                "restoreState": 1031,
+                "isEOF": 1,
+                "transformBy": {
+                  "logical_id": 1,
+                  "_id": 0
+                },
+                "inputStage": {
+                  "stage": "COLLSCAN",
+                  "filter": {
+                    "$and": [
+                      {
+                        "event_type": {
+                          "$eq": "payment"
+                        }
+                      },
+                      {
+                        "period": {
+                          "$eq": "after"
+                        }
+                      },
+                      {
+                        "received_at": {
+                          "$lte": "2026-10-15T00:00:00"
+                        }
+                      }
+                    ]
+                  },
+                  "nReturned": 22480,
+                  "executionTimeMillisEstimate": 31,
+                  "works": 1030361,
+                  "advanced": 22480,
+                  "needTime": 1007880,
+                  "needYield": 0,
+                  "saveState": 1031,
+                  "restoreState": 1031,
+                  "isEOF": 1,
+                  "direction": "forward",
+                  "docsExamined": 1030360
+                }
+              }
+            }
+          },
+          "nReturned": 22480,
+          "executionTimeMillisEstimate": 385
+        },
+        {
+          "$group": {
+            "_id": "$logical_id"
+          },
+          "maxAccumulatorMemoryUsageBytes": {},
+          "totalOutputDataSizeBytes": 5569420,
+          "usedDisk": false,
+          "spills": 0,
+          "spilledDataStorageSize": 0,
+          "numBytesSpilledEstimate": 0,
+          "spilledRecords": 0,
+          "nReturned": 22480,
+          "executionTimeMillisEstimate": 385
+        },
+        {
+          "$group": {
+            "_id": {
+              "$const": null
+            },
+            "payments": {
+              "$sum": {
+                "$const": 1
+              }
+            }
+          },
+          "maxAccumulatorMemoryUsageBytes": {
+            "payments": 96
+          },
+          "totalOutputDataSizeBytes": 245,
+          "usedDisk": false,
+          "spills": 0,
+          "spilledDataStorageSize": 0,
+          "numBytesSpilledEstimate": 0,
+          "spilledRecords": 0,
+          "nReturned": 1,
+          "executionTimeMillisEstimate": 393
+        },
+        {
+          "$project": {
+            "payments": true,
+            "_id": false
+          },
+          "nReturned": 1,
+          "executionTimeMillisEstimate": 393
+        }
+      ],
+      "serverInfo": {
+        "host": "f454f5189a60",
+        "port": 27017,
+        "version": "7.0.45",
+        "gitVersion": "a52313e13ab55c9bddf7c3ff91dab286fa381796"
+      },
+      "serverParameters": {
+        "internalQueryFacetBufferSizeBytes": 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes": 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes": 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes": 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes": 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS": 0,
+        "internalQueryMaxAddToSetBytes": 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": 104857600,
+        "internalQueryFrameworkControl": "forceClassicEngine"
+      },
+      "command": {
+        "aggregate": "events_benchmark",
+        "pipeline": [
+          {
+            "$match": {
+              "period": "after",
+              "event_type": "payment",
+              "received_at": {
+                "$lte": "2026-10-15T00:00:00"
+              }
+            }
+          },
+          {
+            "$group": {
+              "_id": "$logical_id"
+            }
+          },
+          {
+            "$count": "payments"
+          }
+        ],
+        "cursor": {},
+        "$db": "insightops_portfolio"
+      },
+      "ok": 1.0
+    }
+  },
+  "after": {
+    "result": [
+      {
+        "payments": 22480
+      }
+    ],
+    "latencies_ms": [
+      22.611899999901652,
+      22.529899986693636,
+      22.732000012183562,
+      22.583299985853955,
+      23.813499981770292,
+      24.064700002782047,
+      24.589099979493767
+    ],
+    "median_ms": 22.732000012183562,
+    "explain_summary": {
+      "nReturned": 22480,
+      "executionTimeMillis": 21,
+      "totalKeysExamined": 22480,
+      "totalDocsExamined": 0
+    },
+    "explain": {
+      "explainVersion": "1",
+      "stages": [
+        {
+          "$cursor": {
+            "queryPlanner": {
+              "namespace": "insightops_portfolio.events_benchmark",
+              "indexFilterSet": false,
+              "parsedQuery": {
+                "$and": [
+                  {
+                    "event_type": {
+                      "$eq": "payment"
+                    }
+                  },
+                  {
+                    "period": {
+                      "$eq": "after"
+                    }
+                  },
+                  {
+                    "received_at": {
+                      "$lte": "2026-10-15T00:00:00"
+                    }
+                  }
+                ]
+              },
+              "queryHash": "4CDAC1A7",
+              "planCacheKey": "C369C475",
+              "optimizationTimeMillis": 0,
+              "maxIndexedOrSolutionsReached": false,
+              "maxIndexedAndSolutionsReached": false,
+              "maxScansToExplodeReached": false,
+              "winningPlan": {
+                "stage": "PROJECTION_COVERED",
+                "transformBy": {
+                  "logical_id": 1,
+                  "_id": 0
+                },
+                "inputStage": {
+                  "stage": "IXSCAN",
+                  "keyPattern": {
+                    "period": 1,
+                    "event_type": 1,
+                    "received_at": 1,
+                    "logical_id": 1
+                  },
+                  "indexName": "period_type_received_logical",
+                  "isMultiKey": false,
+                  "multiKeyPaths": {
+                    "period": [],
+                    "event_type": [],
+                    "received_at": [],
+                    "logical_id": []
+                  },
+                  "isUnique": false,
+                  "isSparse": false,
+                  "isPartial": false,
+                  "indexVersion": 2,
+                  "direction": "forward",
+                  "indexBounds": {
+                    "period": [
+                      "[\"after\", \"after\"]"
+                    ],
+                    "event_type": [
+                      "[\"payment\", \"payment\"]"
+                    ],
+                    "received_at": [
+                      "[\"\", \"2026-10-15T00:00:00\"]"
+                    ],
+                    "logical_id": [
+                      "[MinKey, MaxKey]"
+                    ]
+                  }
+                }
+              },
+              "rejectedPlans": []
+            },
+            "executionStats": {
+              "executionSuccess": true,
+              "nReturned": 22480,
+              "executionTimeMillis": 21,
+              "totalKeysExamined": 22480,
+              "totalDocsExamined": 0,
+              "executionStages": {
+                "stage": "PROJECTION_COVERED",
+                "nReturned": 22480,
+                "executionTimeMillisEstimate": 0,
+                "works": 22481,
+                "advanced": 22480,
+                "needTime": 0,
+                "needYield": 0,
+                "saveState": 23,
+                "restoreState": 23,
+                "isEOF": 1,
+                "transformBy": {
+                  "logical_id": 1,
+                  "_id": 0
+                },
+                "inputStage": {
+                  "stage": "IXSCAN",
+                  "nReturned": 22480,
+                  "executionTimeMillisEstimate": 0,
+                  "works": 22481,
+                  "advanced": 22480,
+                  "needTime": 0,
+                  "needYield": 0,
+                  "saveState": 23,
+                  "restoreState": 23,
+                  "isEOF": 1,
+                  "keyPattern": {
+                    "period": 1,
+                    "event_type": 1,
+                    "received_at": 1,
+                    "logical_id": 1
+                  },
+                  "indexName": "period_type_received_logical",
+                  "isMultiKey": false,
+                  "multiKeyPaths": {
+                    "period": [],
+                    "event_type": [],
+                    "received_at": [],
+                    "logical_id": []
+                  },
+                  "isUnique": false,
+                  "isSparse": false,
+                  "isPartial": false,
+                  "indexVersion": 2,
+                  "direction": "forward",
+                  "indexBounds": {
+                    "period": [
+                      "[\"after\", \"after\"]"
+                    ],
+                    "event_type": [
+                      "[\"payment\", \"payment\"]"
+                    ],
+                    "received_at": [
+                      "[\"\", \"2026-10-15T00:00:00\"]"
+                    ],
+                    "logical_id": [
+                      "[MinKey, MaxKey]"
+                    ]
+                  },
+                  "keysExamined": 22480,
+                  "seeks": 1,
+                  "dupsTested": 0,
+                  "dupsDropped": 0
+                }
+              }
+            }
+          },
+          "nReturned": 22480,
+          "executionTimeMillisEstimate": 11
+        },
+        {
+          "$group": {
+            "_id": "$logical_id"
+          },
+          "maxAccumulatorMemoryUsageBytes": {},
+          "totalOutputDataSizeBytes": 5569420,
+          "usedDisk": false,
+          "spills": 0,
+          "spilledDataStorageSize": 0,
+          "numBytesSpilledEstimate": 0,
+          "spilledRecords": 0,
+          "nReturned": 22480,
+          "executionTimeMillisEstimate": 16
+        },
+        {
+          "$group": {
+            "_id": {
+              "$const": null
+            },
+            "payments": {
+              "$sum": {
+                "$const": 1
+              }
+            }
+          },
+          "maxAccumulatorMemoryUsageBytes": {
+            "payments": 96
+          },
+          "totalOutputDataSizeBytes": 245,
+          "usedDisk": false,
+          "spills": 0,
+          "spilledDataStorageSize": 0,
+          "numBytesSpilledEstimate": 0,
+          "spilledRecords": 0,
+          "nReturned": 1,
+          "executionTimeMillisEstimate": 16
+        },
+        {
+          "$project": {
+            "payments": true,
+            "_id": false
+          },
+          "nReturned": 1,
+          "executionTimeMillisEstimate": 16
+        }
+      ],
+      "serverInfo": {
+        "host": "f454f5189a60",
+        "port": 27017,
+        "version": "7.0.45",
+        "gitVersion": "a52313e13ab55c9bddf7c3ff91dab286fa381796"
+      },
+      "serverParameters": {
+        "internalQueryFacetBufferSizeBytes": 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes": 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes": 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes": 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes": 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS": 0,
+        "internalQueryMaxAddToSetBytes": 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": 104857600,
+        "internalQueryFrameworkControl": "forceClassicEngine"
+      },
+      "command": {
+        "aggregate": "events_benchmark",
+        "pipeline": [
+          {
+            "$match": {
+              "period": "after",
+              "event_type": "payment",
+              "received_at": {
+                "$lte": "2026-10-15T00:00:00"
+              }
+            }
+          },
+          {
+            "$group": {
+              "_id": "$logical_id"
+            }
+          },
+          {
+            "$count": "payments"
+          }
+        ],
+        "cursor": {},
+        "$db": "insightops_portfolio"
+      },
+      "ok": 1.0
+    }
+  },
+  "results_equal": true,
+  "sql_reconciled": true,
+  "expected_distinct_payments": 22480,
+  "normalized_pages": [
+    {
+      "_id": "checkout",
+      "events": 1030360
+    }
+  ],
+  "limitations": [
+    "Local synthetic data benchmark, not a production scale claim.",
+    "Report actual machine RAM, MongoDB memory limits and storage medium separately before publishing performance claims."
+  ]
+}

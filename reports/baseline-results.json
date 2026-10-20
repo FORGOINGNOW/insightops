@@ -1,0 +1,236 @@
+{
+  "run_date": "2026-10-20",
+  "python": "3.12.4",
+  "packages": {
+    "scipy": "1.18.0",
+    "numpy": "2.3.5",
+    "pytest": "9.1.1",
+    "pymongo": "4.19.0"
+  },
+  "synthetic": true,
+  "analysis": {
+    "canonical": [
+      {
+        "period": "after",
+        "sessions": 10000,
+        "conversions": 800,
+        "rate": 0.08
+      },
+      {
+        "period": "before",
+        "sessions": 10000,
+        "conversions": 1700,
+        "rate": 0.17
+      }
+    ],
+    "strata": [
+      {
+        "period": "after",
+        "channel": "organic",
+        "sessions": 2000,
+        "conversions": 400,
+        "rate": 0.2
+      },
+      {
+        "period": "after",
+        "channel": "paid",
+        "sessions": 8000,
+        "conversions": 400,
+        "rate": 0.05
+      },
+      {
+        "period": "before",
+        "channel": "organic",
+        "sessions": 8000,
+        "conversions": 1600,
+        "rate": 0.2
+      },
+      {
+        "period": "before",
+        "channel": "paid",
+        "sessions": 2000,
+        "conversions": 100,
+        "rate": 0.05
+      }
+    ],
+    "raw_as_of": [
+      {
+        "period": "after",
+        "views": 13333,
+        "payments": 562,
+        "rate": 0.042151053776344406
+      },
+      {
+        "period": "before",
+        "views": 10000,
+        "payments": 1700,
+        "rate": 0.17
+      }
+    ],
+    "cutoff": "2026-10-15T00:00:00",
+    "standardized_to_before_mix": {
+      "before": 0.17000000000000004,
+      "after": 0.17000000000000004
+    },
+    "quality": {
+      "duplicate_events": 3333,
+      "late_payments": 164,
+      "missing_payments": 74,
+      "schema_v2_events": 1998
+    },
+    "reconciliation": {
+      "order_revenue_cents": 26413604,
+      "item_revenue_cents": 26413604,
+      "naive_join_revenue_cents": 52827208,
+      "passed": true
+    },
+    "conclusion": "Overall conversion falls due to channel composition; within-channel rates are unchanged. Event defects further depress the raw metric. This descriptive decomposition does not establish a causal product effect."
+  },
+  "experiment": {
+    "synthetic": true,
+    "seed": 20261021,
+    "randomization_unit": "user",
+    "planned_n_per_arm": 6693,
+    "groups": {
+      "A": {
+        "n": 10022,
+        "converted": 989,
+        "refunded_users": 32,
+        "segments": {
+          "paid": {
+            "n": 4959,
+            "converted": 307
+          },
+          "organic": {
+            "n": 5063,
+            "converted": 682
+          }
+        }
+      },
+      "B": {
+        "n": 9978,
+        "converted": 1128,
+        "refunded_users": 127,
+        "segments": {
+          "paid": {
+            "n": 5025,
+            "converted": 361
+          },
+          "organic": {
+            "n": 4953,
+            "converted": 767
+          }
+        }
+      }
+    },
+    "srm_p_value": 0.7610861677331671,
+    "srm_threshold": 0.001,
+    "primary": {
+      "a_rate": 0.0986828976252245,
+      "b_rate": 0.11304870715574264,
+      "absolute_effect": 0.014365809530518137,
+      "ci95": [
+        0.005839648345409695,
+        0.022891970715626576
+      ],
+      "p_value": 0.0009603355686812611,
+      "method": "pooled two-sided z test; unpooled normal difference CI"
+    },
+    "guardrail_refunded_users_per_assigned_user": {
+      "a_rate": 0.0031929754540011976,
+      "b_rate": 0.012728001603527762,
+      "absolute_effect": 0.009535026149526563,
+      "ci95": [
+        0.0070737686992605265,
+        0.011996283599792601
+      ],
+      "p_value": 3.150349839709736e-14,
+      "method": "pooled two-sided z test; unpooled normal difference CI"
+    },
+    "guardrail_max_absolute_increase": 0.002,
+    "segments_exploratory": {
+      "organic": {
+        "a_rate": 0.13470274540786095,
+        "b_rate": 0.15485564304461943,
+        "absolute_effect": 0.020152897636758482,
+        "ci95": [
+          0.006370996272441488,
+          0.033934799001075475
+        ],
+        "p_value": 0.004148455235161991,
+        "method": "pooled two-sided z test; unpooled normal difference CI"
+      },
+      "paid": {
+        "a_rate": 0.061907642669893126,
+        "b_rate": 0.0718407960199005,
+        "absolute_effect": 0.00993315335000737,
+        "ci95": [
+          0.00013712882196681778,
+          0.019729177878047923
+        ],
+        "p_value": 0.04702200245629156,
+        "method": "pooled two-sided z test; unpooled normal difference CI"
+      }
+    },
+    "decision": "hold_guardrail_harm",
+    "limitations": [
+      "Synthetic experiment; no actual business lift.",
+      "Normal approximation is suitable only for sufficiently populated cells.",
+      "Segment analyses are exploratory, not additional confirmatory tests.",
+      "Refund window is complete by construction; real data requires a fixed maturity window."
+    ]
+  },
+  "rule_evaluation_summary": [
+    {
+      "version": "v0",
+      "split": "dev",
+      "n": 56,
+      "passed": 7,
+      "pass_rate": 0.125
+    },
+    {
+      "version": "v0",
+      "split": "test",
+      "n": 24,
+      "passed": 3,
+      "pass_rate": 0.125
+    },
+    {
+      "version": "v1",
+      "split": "dev",
+      "n": 56,
+      "passed": 28,
+      "pass_rate": 0.5
+    },
+    {
+      "version": "v1",
+      "split": "test",
+      "n": 24,
+      "passed": 12,
+      "pass_rate": 0.5
+    },
+    {
+      "version": "v2",
+      "split": "dev",
+      "n": 56,
+      "passed": 56,
+      "pass_rate": 1.0
+    },
+    {
+      "version": "v2",
+      "split": "test",
+      "n": 24,
+      "passed": 24,
+      "pass_rate": 1.0
+    }
+  ],
+  "cases_sha256": "78189ff2b41c338b8b5e1ce8d4e4c8bc98717bdf20203d507c30ee060670a775",
+  "limitations": [
+    "No LLM was called. These are controlled rule ablations, not AI capability results.",
+    "80 parametrized fixtures across 8 task families; test split shares templates with dev.",
+    "Fixture evidence IDs establish provenance only, not natural-language entailment.",
+    "No human labels, judge calibration or real online A/B result has been collected.",
+    "A 100% V2 score is a harness smoke check; adversarial and distribution-shift evaluation remains future work."
+  ],
+  "local_tests_passed": 13
+}
