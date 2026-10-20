@@ -1,0 +1,59 @@
+{
+  "mode": "live",
+  "cases": 24,
+  "repeats": 1,
+  "planned_requests": 48,
+  "versions": [
+    "v1",
+    "v2"
+  ],
+  "configuration": {
+    "api_key_configured": true,
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "ready": true,
+    "network_request_sent": false
+  },
+  "network_request_sent": true,
+  "cases_sha256": "2205b8b6862f056bbc4304d3203a440e21a495f0983aedb6ae24ddbe6d8e958b",
+  "scope": "Report/decision component with supplied evidence; not end-to-end tool-selection or SQL execution evaluation.",
+  "run_id": "20261020T122026282886Z",
+  "status": "completed",
+  "summary": [
+    {
+      "version": "v1",
+      "requests_attempted": 24,
+      "responses": 24,
+      "raw_reference_passes": 13,
+      "raw_reference_pass_rate": 0.5416666666666666,
+      "blocked": 7,
+      "reference_failures_accepted": 4,
+      "median_latency_ms": 3351.6555,
+      "p95_latency_ms": 8903.525,
+      "reported_total_tokens": 25291,
+      "usage_missing_responses": 0
+    },
+    {
+      "version": "v2",
+      "requests_attempted": 24,
+      "responses": 24,
+      "raw_reference_passes": 14,
+      "raw_reference_pass_rate": 0.5833333333333334,
+      "blocked": 9,
+      "reference_failures_accepted": 1,
+      "median_latency_ms": 4444.7235,
+      "p95_latency_ms": 11592.339,
+      "reported_total_tokens": 35233,
+      "usage_missing_responses": 0
+    }
+  ],
+  "human_review": "not_collected",
+  "monetary_cost": "not_calculated_no_price_table",
+  "limitations": [
+    "Hand-authored synthetic challenges, not a representative production sample.",
+    "Reference decisions and numeric claims are auto-scored; summary correctness is not.",
+    "A blocked bad answer is a safety catch, not a successful answer.",
+    "V2 changes both prompt and gates; their individual contributions require further ablation.",
+    "Model-reported token usage is preserved; repeated cases are correlated."
+  ]
+}

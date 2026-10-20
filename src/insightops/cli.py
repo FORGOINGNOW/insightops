@@ -9,6 +9,7 @@ from .data import ROOT, generate
 from .evaluation import build_cases, evaluate
 from .experiment import run_experiment
 from .workflow import run_workflow
+from .config import configure, configuration_status, probe_configuration
 
 
 def save(path, value):
@@ -74,8 +75,27 @@ def main():
     p=sub.add_parser("demo"); p.add_argument("--root",type=Path,default=ROOT); p.add_argument("--per-period",type=int,default=10000)
     p=sub.add_parser("workflow"); p.add_argument("question"); p.add_argument("--live",action="store_true"); p.add_argument("--root",type=Path,default=ROOT)
     p=sub.add_parser("eval"); p.add_argument("--root",type=Path,default=ROOT)
+    p=sub.add_parser("configure"); group=p.add_mutually_exclusive_group(); group.add_argument("--check",action="store_true"); group.add_argument("--probe",action="store_true"); p.add_argument("--root",type=Path,default=ROOT)
+    p=sub.add_parser("real-data"); p.add_argument("--download",action="store_true"); p.add_argument("--root",type=Path,default=ROOT)
+    p=sub.add_parser("challenge-eval"); p.add_argument("--live",action="store_true"); p.add_argument("--limit",type=int,default=4); p.add_argument("--repeats",type=int,default=1); p.add_argument("--max-requests",type=int,default=12); p.add_argument("--versions",nargs="+",choices=["v1","v2","v3"],default=["v1","v2"]); p.add_argument("--root",type=Path,default=ROOT)
+    p=sub.add_parser("human-review"); p.add_argument("--run-dir",type=Path,required=True); p.add_argument("--labels",type=Path,required=True)
     args=parser.parse_args()
-    if args.command=="demo":
+    if args.command=="human-review":
+        from .review import analyze_reviews
+        result=analyze_reviews(args.run_dir,args.labels)
+        save(args.run_dir/"human-review-summary.json",result)
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+    elif args.command=="real-data":
+        from .real_data import run
+        run(args.root,args.download)
+    elif args.command=="challenge-eval":
+        from .challenges import evaluate_live
+        result=evaluate_live(args.root/"evals/challenges.json",args.root/"artifacts/live-evals",live=args.live,limit=args.limit,repeats=args.repeats,versions=tuple(args.versions),max_requests=args.max_requests)
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+    elif args.command=="configure":
+        result=probe_configuration(args.root/".env") if args.probe else (configuration_status(args.root/".env") if args.check else configure(args.root/".env"))
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+    elif args.command=="demo":
         demo(args.root,args.per_period)
     elif args.command=="workflow":
         result=run_workflow(args.question,args.root/"data/generated",args.live)

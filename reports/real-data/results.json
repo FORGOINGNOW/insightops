@@ -1,0 +1,306 @@
+{
+  "synthetic": false,
+  "ledger": {
+    "rows": 541909,
+    "sale_rows": 530104,
+    "duplicate_candidates": 5268,
+    "missing_customer_rows": 135080,
+    "missing_description_rows": 1454,
+    "sale_value_micropounds": 10666684544000,
+    "cancellation_rows": 9288,
+    "cancellation_value_micropounds": -896812490000,
+    "other_non_sale_rows": 2517
+  },
+  "bucket_totals": [
+    {
+      "bucket": "cancellation",
+      "rows": 9288,
+      "value_micropounds": -896812490000
+    },
+    {
+      "bucket": "other_non_sale",
+      "rows": 2517,
+      "value_micropounds": -22124120000
+    },
+    {
+      "bucket": "sale",
+      "rows": 530104,
+      "value_micropounds": 10666684544000
+    }
+  ],
+  "date_range": {
+    "first": "2010-12-01T08:26:00",
+    "last": "2011-12-09T12:50:00"
+  },
+  "monthly": [
+    {
+      "month": "2010-12",
+      "gross_micropounds": 823746140000,
+      "cancellation_micropounds": -74789120000,
+      "sales_invoices": 1559,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 748957020000
+    },
+    {
+      "month": "2011-01",
+      "gross_micropounds": 691364560000,
+      "cancellation_micropounds": -131364300000,
+      "sales_invoices": 1086,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 560000260000
+    },
+    {
+      "month": "2011-02",
+      "gross_micropounds": 523631890000,
+      "cancellation_micropounds": -25569240000,
+      "sales_invoices": 1100,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 498062650000
+    },
+    {
+      "month": "2011-03",
+      "gross_micropounds": 717639360000,
+      "cancellation_micropounds": -34372280000,
+      "sales_invoices": 1454,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 683267080000
+    },
+    {
+      "month": "2011-04",
+      "gross_micropounds": 537808621000,
+      "cancellation_micropounds": -44601500000,
+      "sales_invoices": 1246,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 493207121000
+    },
+    {
+      "month": "2011-05",
+      "gross_micropounds": 770536020000,
+      "cancellation_micropounds": -47202510000,
+      "sales_invoices": 1681,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 723333510000
+    },
+    {
+      "month": "2011-06",
+      "gross_micropounds": 761739900000,
+      "cancellation_micropounds": -70616780000,
+      "sales_invoices": 1533,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 691123120000
+    },
+    {
+      "month": "2011-07",
+      "gross_micropounds": 719221191000,
+      "cancellation_micropounds": -37921080000,
+      "sales_invoices": 1475,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 681300111000
+    },
+    {
+      "month": "2011-08",
+      "gross_micropounds": 759138380000,
+      "cancellation_micropounds": -54333750000,
+      "sales_invoices": 1361,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 704804630000
+    },
+    {
+      "month": "2011-09",
+      "gross_micropounds": 1058590172000,
+      "cancellation_micropounds": -38902550000,
+      "sales_invoices": 1837,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 1019687622000
+    },
+    {
+      "month": "2011-10",
+      "gross_micropounds": 1154979300000,
+      "cancellation_micropounds": -84274630000,
+      "sales_invoices": 2040,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 1070704670000
+    },
+    {
+      "month": "2011-11",
+      "gross_micropounds": 1509496330000,
+      "cancellation_micropounds": -47740080000,
+      "sales_invoices": 2769,
+      "boundary_incomplete": false,
+      "signed_flow_micropounds": 1461756250000
+    },
+    {
+      "month": "2011-12",
+      "gross_micropounds": 638792680000,
+      "cancellation_micropounds": -205124670000,
+      "sales_invoices": 819,
+      "boundary_incomplete": true,
+      "signed_flow_micropounds": 433668010000
+    }
+  ],
+  "sensitivity": {
+    "all_sales_micropounds": 10666684544000,
+    "known_customer_sales_micropounds": 8911407904000,
+    "deduplicated_sales_micropounds": 10642110804000
+  },
+  "top_countries": [
+    {
+      "country": "United Kingdom",
+      "gross_micropounds": 9025222084000
+    },
+    {
+      "country": "Netherlands",
+      "gross_micropounds": 285446340000
+    },
+    {
+      "country": "EIRE",
+      "gross_micropounds": 283453960000
+    },
+    {
+      "country": "Germany",
+      "gross_micropounds": 228867140000
+    },
+    {
+      "country": "France",
+      "gross_micropounds": 209715110000
+    }
+  ],
+  "observed_customer_cohorts": [
+    {
+      "cohort": "2010-12",
+      "customers": 885,
+      "m1_returning": 324,
+      "m1_observable": true,
+      "m1_rate": 0.36610169491525424
+    },
+    {
+      "cohort": "2011-01",
+      "customers": 417,
+      "m1_returning": 92,
+      "m1_observable": true,
+      "m1_rate": 0.22062350119904076
+    },
+    {
+      "cohort": "2011-02",
+      "customers": 380,
+      "m1_returning": 71,
+      "m1_observable": true,
+      "m1_rate": 0.1868421052631579
+    },
+    {
+      "cohort": "2011-03",
+      "customers": 452,
+      "m1_returning": 68,
+      "m1_observable": true,
+      "m1_rate": 0.1504424778761062
+    },
+    {
+      "cohort": "2011-04",
+      "customers": 300,
+      "m1_returning": 64,
+      "m1_observable": true,
+      "m1_rate": 0.21333333333333335
+    },
+    {
+      "cohort": "2011-05",
+      "customers": 284,
+      "m1_returning": 54,
+      "m1_observable": true,
+      "m1_rate": 0.19014084507042253
+    },
+    {
+      "cohort": "2011-06",
+      "customers": 242,
+      "m1_returning": 42,
+      "m1_observable": true,
+      "m1_rate": 0.17355371900826447
+    },
+    {
+      "cohort": "2011-07",
+      "customers": 188,
+      "m1_returning": 34,
+      "m1_observable": true,
+      "m1_rate": 0.18085106382978725
+    },
+    {
+      "cohort": "2011-08",
+      "customers": 169,
+      "m1_returning": 35,
+      "m1_observable": true,
+      "m1_rate": 0.20710059171597633
+    },
+    {
+      "cohort": "2011-09",
+      "customers": 299,
+      "m1_returning": 70,
+      "m1_observable": true,
+      "m1_rate": 0.23411371237458195
+    },
+    {
+      "cohort": "2011-10",
+      "customers": 358,
+      "m1_returning": 86,
+      "m1_observable": true,
+      "m1_rate": 0.24022346368715083
+    },
+    {
+      "cohort": "2011-11",
+      "customers": 323,
+      "m1_returning": null,
+      "m1_observable": false,
+      "m1_rate": null
+    },
+    {
+      "cohort": "2011-12",
+      "customers": 41,
+      "m1_returning": null,
+      "m1_observable": false,
+      "m1_rate": null
+    }
+  ],
+  "source_ledger_reconciled": true,
+  "definitions": {
+    "currency": "GBP",
+    "integer_money_scale": 1000000,
+    "sales": "non-C invoice, positive quantity and price; unknown customers retained",
+    "cancellations": "C invoice, negative quantity, positive price; not matched to original invoices",
+    "duplicates": "Identical normalized eight-field candidates retained in baseline; exclusion only as sensitivity",
+    "cohort": "First observed positive-sales month, not acquisition month; known IDs only"
+  },
+  "limitations": [
+    "Invoice data has no visit/exposure denominator: conversion and causal product effects are unavailable.",
+    "Gross line value and signed cancellation flow are not recognized accounting revenue, profit or matched refund rates.",
+    "Missing customer IDs remain in monetary totals, but cannot enter identifiable customer cohorts.",
+    "Boundary months are flagged; missing M1 observation is null, not zero.",
+    "Identical rows may be legitimate repeated lines; no ingestion duplicate assertion is made."
+  ],
+  "provenance": {
+    "source": {
+      "dataset": "UCI Online Retail (352)",
+      "synthetic": false,
+      "source_page": "https://archive.ics.uci.edu/dataset/352/online-retail",
+      "download_url": "https://archive.ics.uci.edu/static/public/352/online%2Bretail.zip",
+      "archive_sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+      "workbook_sha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33",
+      "expected_columns": [
+        "InvoiceNo",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "UnitPrice",
+        "CustomerID",
+        "Country"
+      ],
+      "notes": "Historical invoice-line data, not browsing sessions. No conversion, randomized experiment or realized profit can be inferred. Workbook stays local; only aggregate derived reports are committed."
+    },
+    "workbook_sha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+    "archive_sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+    "pipeline_sha256": "976bcf224cda4a950344f20695f05e6424423616b85c596af8bc0e38cac08c82",
+    "retrieved_at": "2026-10-20T12:27:30.883963+00:00",
+    "reader_version": "3.1.5"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "20261020T122026282886Z",
+  "source_files_at_snapshot": {
+    "challenges.py": "4a96917b96b167879bfdaf616989e3d7cb015ae9df395caf419563b0d49a5d17",
+    "workflow.py": "a3dc581a8e048fb592672cbddec5a84f79bf8cbfd3024947c5e2617fda28d0e8",
+    "review.py": "7815d990c5564636b84b27d5d21614f12ef0058b39cf81c82821df728de3c539"
+  },
+  "note": "Source hashes at evidence snapshot time; baseline workflow predates the added data contract. Raw response/prompt hashes remain in run records."
+}

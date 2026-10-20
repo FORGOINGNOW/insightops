@@ -1,0 +1,20 @@
+{
+  "mode": "live",
+  "cases": 24,
+  "repeats": 1,
+  "planned_requests": 48,
+  "versions": [
+    "v1",
+    "v2"
+  ],
+  "configuration": {
+    "api_key_configured": true,
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "ready": true,
+    "network_request_sent": false
+  },
+  "network_request_sent": false,
+  "cases_sha256": "2205b8b6862f056bbc4304d3203a440e21a495f0983aedb6ae24ddbe6d8e958b",
+  "scope": "Report/decision component with supplied evidence; not end-to-end tool-selection or SQL execution evaluation."
+}

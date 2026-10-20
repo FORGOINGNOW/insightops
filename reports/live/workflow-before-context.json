@@ -1,0 +1,23 @@
+{
+  "mode": "live",
+  "status": "needs_clarification",
+  "plan": {
+    "tool": "clarify",
+    "reason": "指标已给定（会话支付转化率），但关键定义缺失，分析结果无法被信任：(1) 周期未指定——before / after 之间用于切分的具体日期（或时间窗）未给出；(2) 总体未指定——'样例'指哪些渠道/新老客/全量会话还是清洗后的会话；(3) 埋点质量核对口径未定义，需确认判定标准（如会话 ID 缺失率、支付事件未回传率、重复/乱序事件比例、渠道来源为空或为 direct 的比例）以及低质量会话是剔除还是仅作敏感性对照。请提供切分日期与两侧窗口长度、渠道范围，以及埋点质量阈值，我再对比两侧转化率并给出渠道构成与质量分布。"
+  },
+  "usage": [
+    {
+      "prompt_tokens": 209,
+      "completion_tokens": 549,
+      "total_tokens": 758,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 378
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 209
+    }
+  ]
+}

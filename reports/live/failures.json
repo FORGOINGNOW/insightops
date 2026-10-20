@@ -1,0 +1,476 @@
+[
+  {
+    "id": "undefined-metric",
+    "version": "v1",
+    "expected_decision": "needs_clarification",
+    "actual_decision": "cannot_estimate_conversion",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "blocked": false,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "empty-denominator",
+    "version": "v2",
+    "expected_decision": "insufficient_data",
+    "actual_decision": "cannot_estimate_conversion",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "policy_constraints": [
+        "insufficient_data"
+      ],
+      "policy_violation": true,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "empty-denominator",
+    "version": "v1",
+    "expected_decision": "insufficient_data",
+    "actual_decision": "cannot_estimate_conversion",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "blocked": false,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "conflicting-ledgers",
+    "version": "v1",
+    "expected_decision": "investigate_source_conflict",
+    "actual_decision": "investigate_source_conflict",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "conflicting-ledgers",
+    "version": "v2",
+    "expected_decision": "investigate_source_conflict",
+    "actual_decision": "investigate_source_conflict",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [
+        "investigate_source_conflict"
+      ],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "srm-before-effects",
+    "version": "v2",
+    "expected_decision": "hold_invalid_assignment",
+    "actual_decision": "hold_invalid_assignment",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [
+        "hold_invalid_assignment",
+        "hold_guardrail_harm"
+      ],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "srm-before-effects",
+    "version": "v1",
+    "expected_decision": "hold_invalid_assignment",
+    "actual_decision": "hold_invalid_assignment",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "harmful-refunds",
+    "version": "v1",
+    "expected_decision": "hold_guardrail_harm",
+    "actual_decision": "hold_guardrail_harm",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": false,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "harmful-refunds",
+    "version": "v2",
+    "expected_decision": "hold_guardrail_harm",
+    "actual_decision": "hold_guardrail_harm",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": false,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [
+        "hold_guardrail_harm"
+      ],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "composition-without-causality",
+    "version": "v2",
+    "expected_decision": "composition_shift",
+    "actual_decision": "composition_shift",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "point-estimate-only",
+    "version": "v2",
+    "expected_decision": "insufficient_uncertainty",
+    "actual_decision": "insufficient_data",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "policy_constraints": [],
+      "policy_violation": false,
+      "blocked": false,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "unmatured-cohort",
+    "version": "v1",
+    "expected_decision": "incomplete_observation",
+    "actual_decision": "incomplete_observation",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "unmatured-cohort",
+    "version": "v2",
+    "expected_decision": "incomplete_observation",
+    "actual_decision": "incomplete_observation",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [
+        "incomplete_observation"
+      ],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "negative-denominator",
+    "version": "v2",
+    "expected_decision": "insufficient_data",
+    "actual_decision": "cannot_estimate_conversion",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "policy_constraints": [
+        "insufficient_data"
+      ],
+      "policy_violation": true,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "negative-denominator",
+    "version": "v1",
+    "expected_decision": "insufficient_data",
+    "actual_decision": "cannot_estimate_conversion",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "blocked": false,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "rare-zero-events",
+    "version": "v1",
+    "expected_decision": "insufficient_uncertainty",
+    "actual_decision": "insufficient_data",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "decision_correct": false,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": true,
+      "blocked": false,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "valid-but-review",
+    "version": "v1",
+    "expected_decision": "eligible_for_review",
+    "actual_decision": "eligible_for_review",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "valid-but-review",
+    "version": "v2",
+    "expected_decision": "eligible_for_review",
+    "actual_decision": "eligible_for_review",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "rounded-source-conflict",
+    "version": "v1",
+    "expected_decision": "investigate_source_conflict",
+    "actual_decision": "investigate_source_conflict",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": true,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "guardrail-boundary",
+    "version": "v2",
+    "expected_decision": "review_guardrail_uncertainty",
+    "actual_decision": "review_guardrail_uncertainty",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": false,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "policy_constraints": [],
+      "policy_violation": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  },
+  {
+    "id": "guardrail-boundary",
+    "version": "v1",
+    "expected_decision": "review_guardrail_uncertainty",
+    "actual_decision": "review_guardrail_uncertainty",
+    "score": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "decision_correct": true,
+      "required_claims_present": false,
+      "limitations_present": true,
+      "passed": false,
+      "scope": "Structured decision/numbers only. Summary entailment still requires independent human review."
+    },
+    "gate": {
+      "schema_valid": true,
+      "claims_valid": false,
+      "blocked": true,
+      "requires_human_review": true
+    }
+  }
+]

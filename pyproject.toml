@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "insightops-portfolio"
-version = "0.1.0"
+version = "0.2.0"
 description = "Reproducible commerce analytics, experiment diagnostics and evidence-first workflow evaluation"
 requires-python = ">=3.11"
 dependencies = ["scipy>=1.11,<2"]
@@ -12,6 +12,7 @@ dependencies = ["scipy>=1.11,<2"]
 [project.optional-dependencies]
 mongo = ["pymongo>=4.6,<5"]
 dev = ["pytest>=8,<10"]
+real-data = ["openpyxl>=3.1,<4"]
 
 [project.scripts]
 insightops = "insightops.cli:main"

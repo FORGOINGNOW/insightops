@@ -124,3 +124,18 @@ def test_generator_is_reproducible(dataset,tmp_path):
     generate(tmp_path,per_period=1000)
     for name in ["commerce.sqlite","events.jsonl","ledger.json"]:
         assert digest(tmp_path/name)==digest(dataset[0]/name)
+
+
+def test_data_contract_resolves_aliases_before_model_routing(dataset,monkeypatch):
+    import insightops.workflow as workflow
+    captured=[]
+    def fake(messages):
+        captured.append(json.loads(messages[1]["content"]))
+        return {"tool":"clarify","reason":"still ambiguous"},{}
+    monkeypatch.setattr(workflow,"call_model",fake)
+    result=run_workflow("fixture before/after",dataset[0],live=True)
+    contract=captured[0]["data_contract"]
+    assert {r["period"] for r in contract["period_aliases"]}=={"before","after"}
+    assert all(r["sessions"]==1000 for r in contract["period_aliases"])
+    assert result["provenance"]["workflow_version"]=="0.2.0"
+    assert result["data_contract"]==contract

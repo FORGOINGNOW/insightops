@@ -4,7 +4,11 @@
 
 这个作品集围绕一个问题：支付转化率下降时，如何区分渠道结构变化、埋点异常和产品效果，并形成可信的决策建议？
 
-业务数据全部为固定种子生成的合成数据。当前版本已完成本地数据分析、模拟实验和规则回归；真实 LLM 质量与 MongoDB 性能只有在相应模式运行后才形成证据。
+默认演示使用固定种子生成的合成数据；独立的 [真实数据案例](reports/real-data/report.md) 分析 UCI 的 541,909 行历史发票明细。真实数据与合成实验分别报告，不拼接成真实产品增长故事。
+
+新增 [24 个独立编写的挑战场景](evals/challenges.json)、真实模型报告组件评测、V2 决策约束与人工复核导入。运行状态和实测结果见 [版本记录](reports/v0.2-iteration.md)。
+
+真实模型首轮 V1/V2 严格参考评分为 13/24、14/24；明确输出契约后，V3 在相同案例上的开发复测为 23/24。后者不是独立测试成绩，完整失败与局限见 [V3 复测报告](reports/v3-contract-retest.md)。
 
 ## 30 秒看结果
 
@@ -22,6 +26,8 @@ MongoDB 已在本地完成 **1,030,360 条合成事件**实测：同一聚合查
 | 统计与实验 | [模拟实现](src/insightops/experiment.py)、[预先定义的实验方案](docs/experiment-plan.md) |
 | AI 工作流 | [受限工具路由、数值核验与运行追踪](src/insightops/workflow.py) |
 | 评测与回归 | [80 条冻结案例](evals/cases.json)、[评分说明与局限](evals/README.md) |
+| 真实数据与清洗判断 | [公开数据报告](reports/real-data/report.md)、[来源与授权](data/sources/uci-online-retail.json)、[读取与 SQL 核对](src/insightops/real_data.py) |
+| 真实模型与复核 | [组件评测实现](src/insightops/challenges.py)、[人工评分导入](src/insightops/review.py)、[配置说明](docs/model-configuration.md) |
 | 工程验证 | [故障测试](tests/test_core.py)、[CI](.github/workflows/ci.yml)、[版本验收清单](docs/status.md) |
 
 ## 本地运行
@@ -55,7 +61,16 @@ artifacts/workflow.json      演示路由、证据、数值核验及来源
 
 默认 demo 使用确定性路由和报告模板，不调用模型、不产生模型费用。任意自然语言问题的路由能力需要真实模型模式验证。
 
-真实模型模式使用兼容 Chat Completions 的接口。设置环境变量后执行：
+真实模型模式使用兼容 Chat Completions 的接口。推荐先交互配置；输入密钥时隐藏显示，`.env` 被 Git 忽略，配置不会发起生成请求：
+
+```powershell
+python -m insightops.cli configure
+python -m insightops.cli configure --check
+# 可选：只读取服务商模型列表，确认认证和模型标识：
+python -m insightops.cli configure --probe
+```
+
+也支持以下环境变量，优先级高于本地配置：
 
 ```powershell
 # 使用自己的凭证管理方式设置这些变量，不把凭证写入文件或 Git。
@@ -66,6 +81,33 @@ insightops workflow --live "比较样例中 before 和 after 周期的会话支�
 ```
 
 一次正常调用包含两次请求：模型选择允许的分析工具，再基于工具证据输出报告。模型不能执行任意 SQL。数值声明验证失败会产生 `blocked_numeric_validation`；验证通过也保留 `requires_human_review`，因为摘要的语义和因果推断尚未自动验证。记录 token usage；未配置价格表时不虚构金额成本。接口需要支持 JSON 对象响应。
+
+## 真实数据与模型挑战评测
+
+```powershell
+python -m pip install -e ".[real-data]"
+insightops real-data --download
+# 预览请求计划，不调用模型：
+insightops challenge-eval
+# 两个配置、四个场景，共八次真实请求：
+insightops challenge-eval --live --limit 4 --max-requests 8
+# 完整 24 场景的两个配置，共 48 次请求：
+insightops challenge-eval --live --limit 24 --max-requests 48
+# 修复配置 V3：相同案例上的开发复测，共 24 次请求：
+insightops challenge-eval --live --versions v3 --limit 24 --max-requests 24
+```
+
+公开数据下载有来源哈希校验，原工作簿保持不变；金额使用百万分之一英镑整数保存。缺失客户 ID 的记录保留在金额统计中；相同字段行作为候选重复进行敏感性分析；未完整观察的次月复购指标保留为空。
+
+挑战评测提供固定证据，测量报告与决策组件，不等同于端到端查库能力。V1 使用基础提示和数值检查，V2 额外加入分析约束提示及确定性决策门禁。评分同时保留模型原始答案是否通过、门禁是否拦截，拦截错误答案不算任务成功。逐条记录、请求计数、耗时、token 和空白人工复核模板保存在 `artifacts/live-evals/<run-id>/`。401/402/403/429 等不可继续的接口错误会停止后续请求。
+
+复核者手工填写模板后运行：
+
+```powershell
+insightops human-review --run-dir artifacts/live-evals/<run-id> --labels <completed-labels.json>
+```
+
+模板不能当作已标注数据；单人评分不宣称评审间一致性。模型裁判校准仍待后续采集。
 
 ## MongoDB 可复现实验
 
@@ -92,4 +134,4 @@ docker compose stop
 冻结案例 → V0/V1/V2 规则消融 → 回归报告
 ```
 
-这份作品集不声称已取得线上增长、真实客户应用或大规模生产运维经验。规则回归的 100% 分数只说明受控案例能通过预设检查。模型裁判校准、人工标注、多 Agent、RAG/MCP、公开真实数据分析是明确列出的后续工作，见 [路线图](docs/roadmap.md)。
+这份作品集不声称已取得线上增长、真实客户应用或大规模生产运维经验。规则回归的 100% 分数只说明受控案例能通过预设检查。独立人工标注、模型裁判校准、多 Agent、RAG/MCP 是后续工作，见 [路线图](docs/roadmap.md)。

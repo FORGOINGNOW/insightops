@@ -1,0 +1,401 @@
+{
+  "mode": "live",
+  "status": "numeric_checks_passed_pending_human_review",
+  "created_at": "2026-10-20T12:23:02.925181+00:00",
+  "question": "比较样例 before 和 after 周期的会话支付转化率，核对渠道构成与埋点质量；说明观察性证据的局限。",
+  "data_contract": {
+    "synthetic": true,
+    "population": "all sessions in the provided fixture; one session per user",
+    "period_aliases": [
+      {
+        "period": "after",
+        "first_session": "2026-10-01T00:00:10",
+        "last_session": "2026-10-07T23:59:16",
+        "sessions": 10000
+      },
+      {
+        "period": "before",
+        "first_session": "2026-09-01T00:03:07",
+        "last_session": "2026-09-07T23:58:38",
+        "sessions": 10000
+      }
+    ],
+    "conversion_definition": "sessions with a paid order / all sessions; orders are payment source of truth",
+    "available_tools": {
+      "analysis": "Observed fixture conversion, channel mix, raw event quality and revenue reconciliation",
+      "experiment": "A separate synthetic user-randomized checkout experiment; cannot infer fixture causality",
+      "clarify": "Only for information still undefined after consulting this contract"
+    }
+  },
+  "plan": {
+    "tool": "analysis",
+    "reason": "该问题针对同一 fixture 中 before/after 周期的观察性会话支付转化率、渠道构成与埋点质量，属于现有数据分析与数据质量核查，而非单独的用户随机实验；因此选择 analysis。"
+  },
+  "answer": {
+    "summary": "在提供的合成 fixture 中，按会话口径（有支付订单的会话 / 全部会话，订单以支付为准），after 周期整体会话支付转化率低于 before；但分解显示两个渠道内部的转化率完全一致，差异来自渠道构成变化：after 周期 paid 渠道占比明显上升、organic 占比下降。按 before 渠道结构标准化后，两周期转化率相同，说明整体下降可由构成变化解释，不能视为产品因果效应。埋点质量存在重复事件、迟到支付、缺失支付等缺陷，且 raw_as_of 的曝光/支付口径与 canonical 订单口径不一致，会使原始指标进一步偏低。",
+    "claims": [
+      {
+        "path": "canonical.0.rate",
+        "value": 0.08
+      },
+      {
+        "path": "canonical.1.rate",
+        "value": 0.17
+      },
+      {
+        "path": "standardized_to_before_mix.after",
+        "value": 0.17000000000000004
+      },
+      {
+        "path": "standardized_to_before_mix.before",
+        "value": 0.17000000000000004
+      },
+      {
+        "path": "strata.0.rate",
+        "value": 0.2
+      },
+      {
+        "path": "strata.1.rate",
+        "value": 0.05
+      },
+      {
+        "path": "strata.2.rate",
+        "value": 0.2
+      },
+      {
+        "path": "strata.3.rate",
+        "value": 0.05
+      },
+      {
+        "path": "strata.0.sessions",
+        "value": 2000
+      },
+      {
+        "path": "strata.1.sessions",
+        "value": 8000
+      },
+      {
+        "path": "strata.2.sessions",
+        "value": 8000
+      },
+      {
+        "path": "strata.3.sessions",
+        "value": 2000
+      },
+      {
+        "path": "raw_as_of.0.rate",
+        "value": 0.042151053776344406
+      },
+      {
+        "path": "raw_as_of.1.rate",
+        "value": 0.17
+      },
+      {
+        "path": "quality.duplicate_events",
+        "value": 3333
+      },
+      {
+        "path": "quality.late_payments",
+        "value": 164
+      },
+      {
+        "path": "quality.missing_payments",
+        "value": 74
+      },
+      {
+        "path": "quality.schema_v2_events",
+        "value": 1998
+      },
+      {
+        "path": "reconciliation.order_revenue_cents",
+        "value": 26413604
+      },
+      {
+        "path": "reconciliation.item_revenue_cents",
+        "value": 26413604
+      }
+    ],
+    "limitations": [
+      "这是观察性 fixture 描述性比较，不是随机实验；不能将 before/after 差异解释为产品、渠道或其他干预的因果效应。",
+      "数据为合成数据，结论仅适用于该 fixture 与给定周期（before 2026-09-01 至 2026-09-07；after 2026-10-01 至 2026-10-07），不可外推到真实业务。",
+      "after 与 before 的渠道构成不同；按 before 渠道结构标准化后转化率相同，说明整体率下降主要由构成变化解释，而非渠道内转化率变化。",
+      "埋点质量存在问题：重复事件 3333、迟到支付 164、缺失支付 74、schema_v2 事件 1998，可能影响 raw 指标与订单口径的一致性。",
+      "raw_as_of 使用 views/payments 口径且截至 2026-10-15，与 canonical 订单口径不同；naive_join_revenue_cents 为 52827208，是订单收入的简单连接重复计数，不能作为收入证据。",
+      "未评估统计显著性、置信区间或样本外泛化；未推断任何收入或业务影响。"
+    ]
+  },
+  "evidence": {
+    "canonical": [
+      {
+        "period": "after",
+        "sessions": 10000,
+        "conversions": 800,
+        "rate": 0.08
+      },
+      {
+        "period": "before",
+        "sessions": 10000,
+        "conversions": 1700,
+        "rate": 0.17
+      }
+    ],
+    "strata": [
+      {
+        "period": "after",
+        "channel": "organic",
+        "sessions": 2000,
+        "conversions": 400,
+        "rate": 0.2
+      },
+      {
+        "period": "after",
+        "channel": "paid",
+        "sessions": 8000,
+        "conversions": 400,
+        "rate": 0.05
+      },
+      {
+        "period": "before",
+        "channel": "organic",
+        "sessions": 8000,
+        "conversions": 1600,
+        "rate": 0.2
+      },
+      {
+        "period": "before",
+        "channel": "paid",
+        "sessions": 2000,
+        "conversions": 100,
+        "rate": 0.05
+      }
+    ],
+    "raw_as_of": [
+      {
+        "period": "after",
+        "views": 13333,
+        "payments": 562,
+        "rate": 0.042151053776344406
+      },
+      {
+        "period": "before",
+        "views": 10000,
+        "payments": 1700,
+        "rate": 0.17
+      }
+    ],
+    "cutoff": "2026-10-15T00:00:00",
+    "standardized_to_before_mix": {
+      "before": 0.17000000000000004,
+      "after": 0.17000000000000004
+    },
+    "quality": {
+      "duplicate_events": 3333,
+      "late_payments": 164,
+      "missing_payments": 74,
+      "schema_v2_events": 1998
+    },
+    "reconciliation": {
+      "order_revenue_cents": 26413604,
+      "item_revenue_cents": 26413604,
+      "naive_join_revenue_cents": 52827208,
+      "passed": true
+    },
+    "conclusion": "Overall conversion falls due to channel composition; within-channel rates are unchanged. Event defects further depress the raw metric. This descriptive decomposition does not establish a causal product effect."
+  },
+  "validation": {
+    "numeric_claims_passed": true,
+    "checks": [
+      {
+        "claim": {
+          "path": "canonical.0.rate",
+          "value": 0.08
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "canonical.1.rate",
+          "value": 0.17
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "standardized_to_before_mix.after",
+          "value": 0.17000000000000004
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "standardized_to_before_mix.before",
+          "value": 0.17000000000000004
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.0.rate",
+          "value": 0.2
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.1.rate",
+          "value": 0.05
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.2.rate",
+          "value": 0.2
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.3.rate",
+          "value": 0.05
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.0.sessions",
+          "value": 2000
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.1.sessions",
+          "value": 8000
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.2.sessions",
+          "value": 8000
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "strata.3.sessions",
+          "value": 2000
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "raw_as_of.0.rate",
+          "value": 0.042151053776344406
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "raw_as_of.1.rate",
+          "value": 0.17
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "quality.duplicate_events",
+          "value": 3333
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "quality.late_payments",
+          "value": 164
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "quality.missing_payments",
+          "value": 74
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "quality.schema_v2_events",
+          "value": 1998
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "reconciliation.order_revenue_cents",
+          "value": 26413604
+        },
+        "valid": true
+      },
+      {
+        "claim": {
+          "path": "reconciliation.item_revenue_cents",
+          "value": 26413604
+        },
+        "valid": true
+      }
+    ],
+    "requires_human_review": true,
+    "scope": "Only explicit structured numeric claims are checked; summary semantics are not validated."
+  },
+  "usage": [
+    {
+      "prompt_tokens": 478,
+      "completion_tokens": 258,
+      "total_tokens": 736,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 205
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 478
+    },
+    {
+      "prompt_tokens": 1205,
+      "completion_tokens": 1076,
+      "total_tokens": 2281,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 364
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 821
+    }
+  ],
+  "latency_ms": 8407.143,
+  "provenance": {
+    "snapshot": {
+      "snapshot": "synthetic-v1-seed-20261020",
+      "seed": 20261020,
+      "per_period": 10000,
+      "files": {
+        "commerce.sqlite": "8f7699c17df9257fcb97bbae9a8841d57dc41eb7c0c52e43ce142b1c6fab9072",
+        "events.jsonl": "a428c9f2d09e228f5c15a1c63ba568e081bbf02b739258cfe8db64e90c940cbb",
+        "ledger.json": "163d9337965c47479d4faca206c4b1f756278a195adb0cc9eb8416453252e135"
+      }
+    },
+    "workflow_version": "0.2.0",
+    "prompt_sha256": "dc1bd448dc85b544d118e7fb6363372f26c896ef30be0578ef41628fa4248359",
+    "model": "deepseek-flash",
+    "source_sha256": {
+      "workflow.py": "a3dc581a8e048fb592672cbddec5a84f79bf8cbfd3024947c5e2617fda28d0e8",
+      "analytics.py": "62a94514009e93b858ef8b35569b8143602ba12090a35c600d6e1d6d777734ee",
+      "experiment.py": "50432b609de904a7282af864bdf3bc9668abb754771e6cad26fb50b04e93dbba"
+    }
+  }
+}
